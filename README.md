@@ -2,9 +2,8 @@
 Patent ML Project
  
  
- I updated the test.py
- 
- 
- this will scrape the pto code and store the data that we need.
- 
- stil need to loop it thought every patent, but it does it for a single one now! 
+I uploaded FullParseTest
+This grabs all the data from a full file.
+Need to store the data now and then extend it to open additional files in a datawork folder.
+Then run one the supercomputer, export as CSV and then begin neural network work.
+
