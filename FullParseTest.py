@@ -6,7 +6,7 @@ from xml.dom.minidom import parse
 import xml.dom.minidom
 import re
 import time
-
+i=0
 doc=[]
 date=[]
 artunit=[]
@@ -23,11 +23,9 @@ n=len(matchedtext)
 p=int
 for p in range(0, n):
     matchedtext[p]= "<?"+ matchedtext[p]+ "/us-patent-grant>"
-i=0
 for p in matchedtext:
     time.sleep(1)
     cleanmatchedtext = matchedtext[i-2].replace("&", "and")
-    i+=1
     xmldoc=xml.dom.minidom.parseString(cleanmatchedtext)
     grantdata=xmldoc.childNodes[1]
     bibdata=grantdata.childNodes[0]
@@ -50,20 +48,22 @@ for p in matchedtext:
         for claimtext in claimtext:
             finalclaimtext= claimtext.childNodes[0].nodeValue
             ClaimText=ClaimText + finalclaimtext
-            doc.append(doc_number[0].firstChild.nodeValue)
-            date.append(granted_date)
-            artunit.append(deptval)
-            title.append(patent_title[0].firstChild.nodeValue)
-            abstracttext.append(abstract_text[0].firstChild.nodeValue)
-            firstclaim.append(ClaimText)
-    print( doc_number[0].firstChild.nodeValue)
-    print( granted_date)
-    print(deptval)
-    print( patent_title[0].firstChild.nodeValue)
-    print(abstract_text[0].firstChild.nodeValue)
-    print(ClaimText)
+        print(doc_number[0].firstChild.nodeValue)
+        print(granted_date)
+        print(deptval)
+        print(patent_title[0].firstChild.nodeValue)
+        print(abstract_text[0].firstChild.nodeValue)
+        print(ClaimText)
+        doc.append(doc_number[0].firstChild.nodeValue)
+        date.append(granted_date)
+        artunit.append(deptval)
+        title.append(patent_title[0].firstChild.nodeValue)
+        abstracttext.append(abstract_text[0].firstChild.nodeValue)
+        firstclaim.append(ClaimText)
+
     else:
         print("not a utility patent")
+    i += 1
     print("\n")
     end
 
