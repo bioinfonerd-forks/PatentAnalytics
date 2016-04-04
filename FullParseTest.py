@@ -1,25 +1,28 @@
 # Code to extract patent data from the XML files of the Full text data
-import commands
-from xml.dom.minidom import parse
-from xml.dom import minidom
-import xml.dom.minidom
-with open('large_subset_full_text.xml','r') as myfile:
-    inputtext = myfile.read().replace('\n', '')
+import os
+import sys
 
-    #inputtext="?xml is the best us-patent-grant"
+from xml.dom.minidom import parse
+import xml.dom.minidom
 import re
 import time
+
+doc=[]
+date=[]
+artunit=[]
+title=[]
+abstracttext=[]
+firstclaim=[]
+
+with open('large_subset_full_text.xml','r') as myfile:
+    inputtext = myfile.read().replace('\n', '')
 start=re.escape("<?")
 end=re.escape("/us-patent-grant>")
-#this=re.findall(r'(?<={}).*?(?={})'.format(start, end), inputtext)
-#print(this)
 matchedtext= re.findall(r'(?<={}).*?(?={})'.format(start,end), inputtext)
 n=len(matchedtext)
 p=int
 for p in range(0, n):
     matchedtext[p]= "<?"+ matchedtext[p]+ "/us-patent-grant>"
-    #matchedtext[p]=matchedtext[p-2]
-    #matchedtext[p]=matchedtext[-2:]
 i=0
 for p in matchedtext:
     time.sleep(1)
@@ -47,6 +50,12 @@ for p in matchedtext:
         for claimtext in claimtext:
             finalclaimtext= claimtext.childNodes[0].nodeValue
             ClaimText=ClaimText + finalclaimtext
+            doc.append(doc_number[0].firstChild.nodeValue)
+            date.append(granted_date)
+            artunit.append(deptval)
+            title.append(patent_title[0].firstChild.nodeValue)
+            abstracttext.append(abstract_text[0].firstChild.nodeValue)
+            firstclaim.append(ClaimText)
         print( doc_number[0].firstChild.nodeValue)
         print( granted_date)
         print(deptval)
@@ -58,5 +67,10 @@ for p in matchedtext:
     print("\n")
     end
 
-
+print(doc)
+print(date)
+print(artunit)
+print(title)
+print(abstracttext)
+print(firstclaim)
 
