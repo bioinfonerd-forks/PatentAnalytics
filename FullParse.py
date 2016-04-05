@@ -78,4 +78,3 @@ print(artunit)
 print(title)
 print(abstracttext)
 print(firstclaim)
-
