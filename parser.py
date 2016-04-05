@@ -3,7 +3,7 @@ from config import Config
 import os
 import re
 from pandas import DataFrame
-import xml.etree.ElementTree
+import xml
 
 
 class Patent(object):
@@ -55,7 +55,7 @@ class Parser(object):
         for partition in clean_text:
             try:
                 xmldoc, appref = self.parse_xml(partition)
-            except xml.etree.ElementTree.ParseError:
+            except xml.parsers.expat.ExpatError:
                 continue
             if appref == 'utility':
                 self.patents.append(self.extract_patent(xmldoc))
