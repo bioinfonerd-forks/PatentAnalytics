@@ -1,6 +1,7 @@
 import xml.dom.minidom
 from config import Config
-import os, re
+import os
+import re
 
 
 class Patent(object):
@@ -50,7 +51,10 @@ class Parser(object):
         clean_text = self.clean_xml(file_text)
         patents = []
         for partition in clean_text:
-            xmldoc, appref = self.parse_xml(partition)
+            try:
+                xmldoc, appref = self.parse_xml(partition)
+            except xml.etree.ElementTree.ParseError:
+                continue
             if appref == 'utility':
                 patents.append(self.extract_patent(xmldoc))
         return patents
