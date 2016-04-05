@@ -17,7 +17,7 @@ for claimtext in claimtext:
     ClaimText=ClaimText + finalclaimtext
 
 
-print(doc_number[0].firstChild.nodeValue)
+print(doc_number[1].firstChild.nodeValue)
 print(granted_date)
 print(patent_title[0].firstChild.nodeValue)
 print(abstract_text[0].firstChild.nodeValue)
