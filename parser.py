@@ -2,6 +2,8 @@ import xml.dom.minidom
 from config import Config
 import os
 import re
+from pandas import DataFrame
+import xml.etree.ElementTree
 
 
 class Patent(object):
@@ -12,6 +14,7 @@ class Patent(object):
 class Parser(object):
     def __init__(self, config):
         self.config = config
+        self.patents = []
 
     def load_xml(self, filepath):
         with open(filepath, 'r') as myfile:
@@ -49,18 +52,20 @@ class Parser(object):
         filepath = os.path.join(self.config.data_dir, filename)
         file_text = self.load_xml(filepath)
         clean_text = self.clean_xml(file_text)
-        patents = []
         for partition in clean_text:
             try:
                 xmldoc, appref = self.parse_xml(partition)
             except xml.etree.ElementTree.ParseError:
                 continue
             if appref == 'utility':
-                patents.append(self.extract_patent(xmldoc))
-        return patents
+                self.patents.append(self.extract_patent(xmldoc))
+
+    def save_data(self):
+        df = DataFrame(self.patents)
+        df.to_csv(os.path.join(self.config.data_dir, 'patents.csv'))
 
 if __name__ == "__main__":
     config = Config()
     parser = Parser(config)
-    patents = parser.import_data('ipg160105.xml')
-    pass
+    parser.import_data('ipg160105.xml')
+    parser.save_data()
