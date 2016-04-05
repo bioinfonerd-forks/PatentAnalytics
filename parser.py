@@ -1,6 +1,6 @@
 import xml.dom.minidom
 from config import Config
-import os
+import os, re
 
 
 class Patent(object):
@@ -11,6 +11,16 @@ class Patent(object):
 class Parser(object):
     def __init__(self, config):
         self.config = config
+
+    def clean_xml(self, filename):
+        filepath = os.path.join(config.data_dir, filename)
+        with open(filepath,'r') as myfile:
+            inputtext = myfile.read().replace('\n', '')
+        start=re.escape("<?")
+        end=re.escape("/us-patent-grant>")
+        matchedtext= re.findall(r'(?<={}).*?(?={})'.format(start,end), inputtext)
+        clean_text = ["<?" + partition + "/us-patent-grant>" for partition in matchedtext]
+        return clean_text
 
     def import_xml(self, filename):
         filepath = os.path.join(config.data_dir, filename)
@@ -28,5 +38,5 @@ class Parser(object):
 if __name__ == "__main__":
     config = Config()
     parser = Parser(config)
-    properties = parser.import_xml('fullpatenttext.xml')
+    properties = parser.import_xml('ipg160105.xml')
     patent = Patent(properties)

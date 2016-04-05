@@ -16,14 +16,12 @@ firstclaim=[]
 
 with open('data/ipg160105.xml','r') as myfile:
     inputtext = myfile.read().replace('\n', '')
-start=re.escape("<?")
-end=re.escape("/us-patent-grant>")
-matchedtext= re.findall(r'(?<={}).*?(?={})'.format(start,end), inputtext)
-n=len(matchedtext)
-p=inta
-for p in range(0, n):
+start = re.escape("<?")
+end = re.escape("/us-patent-grant>")
+matchedtext = re.findall(r'(?<={}).*?(?={})'.format(start, end), inputtext)
 
-    matchedtext[p]= "<?"+ matchedtext[p]+ "/us-patent-grant>"
+for p in range(0, len(matchedtext)):
+    matchedtext[p] = "<?" + matchedtext[p] + "/us-patent-grant>"
 
 for p in matchedtext:
     try:
