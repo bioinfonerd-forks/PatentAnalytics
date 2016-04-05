@@ -1,5 +1,6 @@
 import xml.dom.minidom
-
+from config import Config
+import os
 
 class Patent(object):
     def __init__(self, properties):
@@ -11,7 +12,8 @@ class Parser(object):
         self.config = config
 
     def import_xml(self, filename):
-        xmldoc = xml.dom.minidom.parse(filename)
+        filepath = os.path.join(config.data_dir, filename)
+        xmldoc = xml.dom.minidom.parse(filepath)
         properties = dict()
         properties['title'] = xmldoc.getElementsByTagName("invention-title")
         properties['date'] = xmldoc.getElementsByTagName("us-patent-grant")[0].attributes['date-produced'].value
@@ -23,6 +25,7 @@ class Parser(object):
         return properties
 
 if __name__ == "__main__":
-    parser = Parser([])
+    config = Config()
+    parser = Parser(config)
     properties = parser.import_xml('fullpatenttext.xml')
     patent = Patent(properties)
