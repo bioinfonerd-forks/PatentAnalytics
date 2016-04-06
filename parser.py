@@ -1,9 +1,14 @@
-import xml.dom.minidom
 from config import Config
 import os
 import re
 from pandas import DataFrame
 import xml
+
+
+class PatentList(object):
+    def __init__(self, patents):
+        # Save a list of patents to a dataframe
+        pass
 
 
 class Patent(object):
