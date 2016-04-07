@@ -2,8 +2,4 @@
 Patent ML Project
  
  
-I uploaded FullParseTest.
-This grabs all the data from a full file.
-Need to store the data now and then extend it to open additional files in a datawork folder.
-Then run one the supercomputer, export as CSV and then begin neural network work.
-
+SQL_TEST_CSVexport builds off of full parse. takes patent data and puts it into a SQL queryable table. can export the table to CSV, JSON file formats. all that's left for data work is to download all of the .xml files, put them into the folder and run through all of them to create a final CSV file/SQL database.
