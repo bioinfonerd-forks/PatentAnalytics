@@ -48,6 +48,7 @@ class Parser(object):
         properties['abstract'] = xmldoc.getElementsByTagName("abstract")[0].getElementsByTagName("p")[0].childNodes[0].nodeValue
         properties['docnum'] = xmldoc.getElementsByTagName('doc-number')[0].childNodes[0].nodeValue
         properties['prefix'] = xmldoc.getElementsByTagName("claim-text")[0].childNodes[0].nodeValue
+        properties['dept'] = xmldoc.getElementsByTagName("department")[0].childNodes[0].nodeValue
         claims = xmldoc.getElementsByTagName("claim-text")[0].getElementsByTagName("claim-text")
         properties['claims'] = [claim.childNodes[0].nodeValue for claim in claims]
         patent = Patent(properties)
