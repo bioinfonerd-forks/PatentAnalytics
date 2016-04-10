@@ -2,4 +2,15 @@
 Patent ML Project
  
  
-SQL_TEST_CSVexport builds off of full parse. takes patent data and puts it into a SQL queryable table. can export the table to CSV, JSON file formats. all that's left for data work is to download all of the .xml files, put them into the folder and run through all of them to create a final CSV file/SQL database.
+## Data Extraction
+XML Files in the data folder contain several XML structures that represent individual patents containing pertinent information.
+
+For each patent we are extracting:
+1. Title
+2. Date
+3. Abstract Text
+4. Doc Number
+5. Claim prefix
+6. Claims
+7. Department
+
