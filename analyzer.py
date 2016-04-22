@@ -9,7 +9,6 @@ import dill as pickle
 class Analyzer(object):
     def __init__(self, config):
         self.config = config
-        self.corpus = None
         self.tfidf = None
 
     def load_data(self):
@@ -21,7 +20,7 @@ class Analyzer(object):
         selected_data = df[((df.artunit.apply(str).str[:2] == "36") |
                             (df.artunit.apply(str).str[:2] == "24") |
                             (df.artunit.apply(str).str[:2] == "21"))]
-        self.corpus = selected_data
+        return selected_data
 
     @staticmethod
     def tokenize(text):
@@ -61,10 +60,11 @@ class Analyzer(object):
         """
         self.tfidf = pickle.load(open('trained_vector.dill', 'rb'))
 
-    def train(self, data, save=True):
+    def train(self, data, ngrams, save=True):
         """
         Train an existing or new model with data
-        :param corpus:
+        :param data: An iterable structure
+        :param ngrams: Number of phrases to captures
         :param save:
         :return:
         """
@@ -72,7 +72,7 @@ class Analyzer(object):
         if self.tfidf:
             vec = self.tfidf
         else:
-            vec = self.initialize_model()
+            vec = self.initialize_model(ngrams)
 
         # Fit data to model
         tfs = vec.fit_transform(data)
