@@ -12,4 +12,4 @@ if __name__ == '__main__':
     config = Config()
     f = Factory(config)
     f.analyzer.load_data()
-    f.analyzer.
+    f.analyzer.train()
