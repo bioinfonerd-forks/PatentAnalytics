@@ -67,7 +67,7 @@ class Analyzer(object):
         )
         return model
 
-    def train_feature_model(self, n_grams, filename):
+    def train_feature_model(self, n_grams, feature_name):
         """
         Train an existing or new model with data
         :param n_grams: Number of phrases to captures
@@ -95,7 +95,7 @@ class Analyzer(object):
         self.feature_matrix = tfs
 
         # Save vector
-        self.save_model(filename)
+        self.save_model(feature_name)
 
     def extract_features(self, n_grams, feature_name):
         """
