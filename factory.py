@@ -1,5 +1,6 @@
 from config import Config
 from analyzer import Analyzer
+from classify import Classify
 
 
 class Factory(object):
@@ -12,6 +13,11 @@ class Factory(object):
         self.analyzer.extract_data('abstract')
         self.analyzer.train_feature_model(1, 'abstract_model.dill')
         self.analyzer.save_features('abstract_feature_matrix.dill')
+
+    def train_classifier(self):
+        c = Classify(self.config)
+        pass
+
 
 if __name__ == '__main__':
     config = Config()
