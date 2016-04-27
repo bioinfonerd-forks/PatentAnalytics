@@ -26,7 +26,7 @@ class Factory(object):
         :return:
         """
         c = Classify(self.config)
-        feature_matrix_reduced = c.reduce_dimensionality(feature_matrix)
+        feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
         c.train(feature_matrix_reduced, response_vector)
 
 
