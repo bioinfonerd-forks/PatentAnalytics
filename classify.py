@@ -7,6 +7,11 @@ class Classify(object):
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):
+        """
+
+        :param feature_matrix: Dense nxp matrix
+        :return: Reduced matrix with q*p features
+        """
         pca = PCA(n_components=0.5*feature_matrix.shape[1])
         feature_matrix_reduced = pca.fit_transform(feature_matrix)
         return feature_matrix_reduced
