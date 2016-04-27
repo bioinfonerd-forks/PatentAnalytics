@@ -67,7 +67,7 @@ class Analyzer(object):
         )
         return model
 
-    def train_feature_model(self, n_grams):
+    def train_feature_model(self, n_grams, filename):
         """
         Train an existing or new model with data
         :param n_grams: Number of phrases to captures
@@ -95,22 +95,22 @@ class Analyzer(object):
         self.feature_matrix = tfs
 
         # Save vector
-        self.save_model()
+        self.save_model(filename)
 
     def extract_features(self, corpus):
         """
-         Get the feature matrix for a corpus with the saved vectorizer
+        Get the feature matrix for a corpus with the saved vectorizer
         :param corpus:
         :return:
         """
         self.feature_matrix = self.feature_model.transform(corpus)
 
-    def save_model(self):
+    def save_model(self, filename):
         """
         Save the feature model into a pickled object
         :return:
         """
-        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, 'trained_model.dill'), 'wb'))
+        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, filename), 'wb'))
 
     def load_model(self):
         """
@@ -119,9 +119,9 @@ class Analyzer(object):
         """
         self.feature_model = pickle.load(open(os.path.join(self.config.data_dir, 'trained_model.dill'), 'rb'))
 
-    def save_features(self):
+    def save_features(self, filename):
         """
         Use pickle to save the feature matrix in a python object
         :return: Nothing
         """
-        pickle.dump(self.feature_matrix, open(os.path.join(self.config.data_dir, 'feature_matrix.dill'), 'wb'))
+        pickle.dump(self.feature_matrix, open(os.path.join(self.config.data_dir, filename), 'wb'))

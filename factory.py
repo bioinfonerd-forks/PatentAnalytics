@@ -7,11 +7,13 @@ class Factory(object):
         self.config = config
         self.analyzer = Analyzer(config)
 
+    def analyze_abstract_data(self, filename):
+        self.analyzer.load_patent_data(filename)
+        self.analyzer.extract_data('abstract')
+        self.analyzer.train_feature_model(1, 'abstract_model.dill')
+        self.analyzer.save_features('abstract_feature_matrix.dill')
 
 if __name__ == '__main__':
     config = Config()
     f = Factory(config)
-    f.analyzer.load_patent_data('2016Patent_Data.csv')
-    f.analyzer.extract_data('abstract')
-    f.analyzer.train_feature_model(1)
-    f.analyzer.save_features()
+    f.analyze_abstract_data('2016Patent_Data.csv')
