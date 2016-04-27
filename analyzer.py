@@ -97,35 +97,43 @@ class Analyzer(object):
         # Save vector
         self.save_model(filename)
 
-    def extract_features(self, n_grams, filename):
+    def extract_features(self, n_grams, feature_name):
         """
         Get the feature matrix for a corpus with the saved vectorizer
         :param corpus:
         :return:
         """
-        try:
-            self.load_model(filename)
+        if os.path.isfile(self.config.get_matrix_path(feature_name)):
+            self.load_features(feature_name)
+        elif os.path.isfile(self.config.get_model_path(feature_name)):
+            self.load_model(feature_name)
             self.feature_matrix = self.feature_model.transform(self.data)
-        except OSError:
-            self.train_feature_model(n_grams, filename)
+        else:
+            self.train_feature_model(n_grams, feature_name)
 
-    def save_model(self, filename):
+    def save_model(self, feature_name):
         """
         Save the feature model into a pickled object
+        :param feature_name:
         :return:
         """
-        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, filename), 'wb'))
+        pickle.dump(self.feature_model, open(self.config.get_model_path(feature_name), 'wb'))
 
-    def load_model(self, filename):
+    def load_model(self, feature_name):
         """
         Load a saved model for additional training or testing
+        :param feature_name
         :return:
         """
-        self.feature_model = pickle.load(open(os.path.join(self.config.data_dir, filename), 'rb'))
+        self.feature_model = pickle.load(open(self.config.get_model_path(feature_name), 'rb'))
 
-    def save_features(self, filename):
+    def save_features(self, feature_name):
         """
         Use pickle to save the feature matrix in a python object
+        :param feature_name:
         :return: Nothing
         """
-        pickle.dump(self.feature_matrix, open(os.path.join(self.config.data_dir, filename), 'wb'))
+        pickle.dump(self.feature_matrix, open(self.config.get_matrix_path(feature_name), 'wb'))
+
+    def load_features(self, feature_name):
+        self.feature_matrix = pickle.load(open(self.config.get_matrix_path(feature_name), 'rb'))

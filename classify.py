@@ -13,6 +13,5 @@ class Classify(object):
         """
 
         # Make sure the number of examples is greater than number of predictors
-        if feature_matrix and response_vector:
-            pass
+        pass
 
