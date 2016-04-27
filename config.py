@@ -9,7 +9,7 @@ class Config(object):
         self.matrix_name = '_feature_matrix.dill'
 
     def get_model_path(self, feature_name):
-        return os.path.join(feature_name + self.model_name)
+        return os.path.join(self.data_dir, feature_name + self.model_name)
 
     def get_matrix_path(self, feature_name):
-        return os.path.join(feature_name + self.matrix_name)
+        return os.path.join(self.data_dir, feature_name + self.matrix_name)
