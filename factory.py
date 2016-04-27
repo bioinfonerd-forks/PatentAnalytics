@@ -11,6 +11,7 @@ class Factory(object):
 if __name__ == '__main__':
     config = Config()
     f = Factory(config)
-    f.analyzer.load_data('2016Patent_Data.csv')
-    f.analyzer.train(1)
+    f.analyzer.load_patent_data('2016Patent_Data.csv')
+    f.analyzer.extract_data('abstract')
+    f.analyzer.train_feature_model(1)
     f.analyzer.save_features()

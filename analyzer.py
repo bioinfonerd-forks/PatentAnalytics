@@ -9,7 +9,9 @@ import dill as pickle
 class Analyzer(object):
     def __init__(self, config):
         self.config = config
+        self.data_frame = None
         self.data = None
+        self.response = None
         self.feature_model = None
         self.feature_matrix = None
 
@@ -23,7 +25,16 @@ class Analyzer(object):
         selected_data = df[((df.artunit.apply(str).str[:2] == "36") |
                             (df.artunit.apply(str).str[:2] == "24") |
                             (df.artunit.apply(str).str[:2] == "21"))]
-        self.data = selected_data
+        self.data_frame = selected_data
+
+    def extract_data(self, column_name):
+        """
+
+        :param column_name: Name list abstract or title or claims
+        :return:
+        """
+        self.data = self.data_frame[column_name].tolist()
+        self.response = self.data_frame['artunit'].tolist()
 
     @staticmethod
     def tokenize(text):
@@ -56,7 +67,7 @@ class Analyzer(object):
         )
         return model
 
-    def train(self, n_grams):
+    def train_feature_model(self, n_grams):
         """
         Train an existing or new model with data
         :param n_grams: Number of phrases to captures
