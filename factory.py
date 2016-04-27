@@ -17,7 +17,7 @@ class Factory(object):
         self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(1, 'abstract_model.dill')
+        self.analyzer.extract_features(1, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
     def train_classifier(self, feature_matrix, response_vector):
