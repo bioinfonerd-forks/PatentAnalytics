@@ -11,7 +11,7 @@ class Analyzer(object):
         self.config = config
         self.data = None
         self.feature_model = None
-        self.features = None
+        self.feature_matrix = None
 
     def load_patent_data(self, filename):
         """
@@ -40,14 +40,14 @@ class Analyzer(object):
         return stemmed
 
     @staticmethod
-    def initialize_model(ngrams):
+    def initialize_model(n_grams):
         """
         Create a new TFIDF model
-        :param ngrams: Number of phrases to capture in model
+        :param n_grams: Number of phrases to capture in model
         :return: The initialized TFIDF model
         """
         model = TfidfVectorizer(
-            ngram_range=(ngrams, ngrams),
+            ngram_range=(n_grams, n_grams),
             stop_words='english',
             lowercase=True,
             strip_accents='ascii',
@@ -56,42 +56,35 @@ class Analyzer(object):
         )
         return model
 
-    def load_vector(self):
-        """
-        Load a saved model for additional training or testing
-        :return:
-        """
-        self.tfidf = pickle.load(open('trained_vector.dill', 'rb'))
-
-    def train(self, ngrams, save=True):
+    def train(self, n_grams):
         """
         Train an existing or new model with data
-        :param ngrams: Number of phrases to captures
-        :param save:
+        :param n_grams: Number of phrases to captures
         :return:
         """
+        # TODO: Load specific feature model if one is specified
+
         # Use loaded data to train
         if not self.data:
             raise ReferenceError('Data not loaded into analyzer object')
 
         # Do not initialize if the tfidf vector exists
-        if self.tfidf:
-            vec = self.tfidf
+        if self.feature_model:
+            vec = self.feature_model
         else:
-            vec = self.initialize_model(ngrams)
+            vec = self.initialize_model(n_grams)
 
         # Fit data to model
         tfs = vec.fit_transform(self.data)
-
-        # Save vector if asked
-        if save:
-            pickle.dump(vec, open(os.path.join(self.config.data_dir, 'trained_vector.dill', 'wb')))
 
         # Put the vector back into the object
         self.feature_model = vec
 
         # Return the feature matrix for these items
-        self.features = tfs
+        self.feature_matrix = tfs
+
+        # Save vector
+        self.save_model()
 
     def extract_features(self, corpus):
         """
@@ -99,11 +92,25 @@ class Analyzer(object):
         :param corpus:
         :return:
         """
-        self.features = self.tfidf.transform(corpus)
+        self.feature_matrix = self.feature_model.transform(corpus)
+
+    def save_model(self):
+        """
+        Save the feature model into a pickled object
+        :return:
+        """
+        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, 'trained_model.dill', 'wb')))
+
+    def load_model(self):
+        """
+        Load a saved model for additional training or testing
+        :return:
+        """
+        self.feature_model = pickle.load(open('trained_model.dill', 'rb'))
 
     def save_features(self):
         """
         Use pickle to save the feature matrix in a python object
         :return: Nothing
         """
-        pickle.dump(self.features, open(os.path.join(self.config.data_dir, 'features.py'), 'wb'))
+        pickle.dump(self.feature_matrix, open(os.path.join(self.config.data_dir, 'feature_matrix.dill'), 'wb'))
