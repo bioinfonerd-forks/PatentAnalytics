@@ -11,5 +11,5 @@ class Factory(object):
 if __name__ == '__main__':
     config = Config()
     f = Factory(config)
-    data = f.analyzer.load_data()
-    pass
+    f.analyzer.load_data()
+    f.analyzer.train()
