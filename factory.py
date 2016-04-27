@@ -14,7 +14,7 @@ class Factory(object):
         :param filename:
         :return:
         """
-        self.analyzer = Analyzer(config)
+        self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
         self.analyzer.extract_features(1, 'abstract_model.dill')
@@ -31,7 +31,7 @@ class Factory(object):
 
 
 if __name__ == '__main__':
-    config = Config()
-    f = Factory(config)
+    config_info = Config()
+    f = Factory(config_info)
     feature_matrix, response_vector = f.analyze_abstract_data('2016Patent_Data.csv')
     f.train_classifier(feature_matrix, response_vector)

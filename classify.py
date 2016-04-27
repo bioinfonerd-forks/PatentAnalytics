@@ -7,6 +7,8 @@ class Classify(object):
     def train(self, feature_matrix, response_vector):
         """
         Train the model with the feature vector and response vector
+        :param feature_matrix: blh
+        :param response_vector: blh
         :return:
         """
 
