@@ -13,6 +13,7 @@ class Factory(object):
         self.analyzer.extract_data('abstract')
         self.analyzer.train_feature_model(1, 'abstract_model.dill')
         self.analyzer.save_features('abstract_feature_matrix.dill')
+        return [self.analyzer.feature_matrix, self.analyzer.response]
 
     def train_classifier(self):
         c = Classify(self.config)
