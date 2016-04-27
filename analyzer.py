@@ -97,13 +97,17 @@ class Analyzer(object):
         # Save vector
         self.save_model(filename)
 
-    def extract_features(self, corpus):
+    def extract_features(self, n_grams, filename):
         """
         Get the feature matrix for a corpus with the saved vectorizer
         :param corpus:
         :return:
         """
-        self.feature_matrix = self.feature_model.transform(corpus)
+        try:
+            self.load_model(filename)
+            self.feature_matrix = self.feature_model.transform(self.data)
+        except OSError:
+            self.train_feature_model(n_grams, filename)
 
     def save_model(self, filename):
         """
@@ -112,12 +116,12 @@ class Analyzer(object):
         """
         pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, filename), 'wb'))
 
-    def load_model(self):
+    def load_model(self, filename):
         """
         Load a saved model for additional training or testing
         :return:
         """
-        self.feature_model = pickle.load(open(os.path.join(self.config.data_dir, 'trained_model.dill'), 'rb'))
+        self.feature_model = pickle.load(open(os.path.join(self.config.data_dir, filename), 'rb'))
 
     def save_features(self, filename):
         """
