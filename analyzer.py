@@ -110,14 +110,14 @@ class Analyzer(object):
         Save the feature model into a pickled object
         :return:
         """
-        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, 'trained_model.dill', 'wb')))
+        pickle.dump(self.feature_model, open(os.path.join(self.config.data_dir, 'trained_model.dill'), 'wb'))
 
     def load_model(self):
         """
         Load a saved model for additional training or testing
         :return:
         """
-        self.feature_model = pickle.load(open('trained_model.dill', 'rb'))
+        self.feature_model = pickle.load(open(os.path.join(self.config.data_dir, 'trained_model.dill'), 'rb'))
 
     def save_features(self):
         """
