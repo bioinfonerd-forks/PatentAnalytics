@@ -11,10 +11,13 @@
     <p><input type=submit value=Submit /></p>
 </form>
 
+{% if abstract %}
+<p>Abstract: {{ abstract }}</p>
+
 {% if error %}
 <p><font color="red">{{ error }}</font></p>
-{% elif results %}
-{{ results|safe }}
+{% elif group %}
+<p>Group Number: {{ group|safe }}</p>
 {% endif %}
 
 

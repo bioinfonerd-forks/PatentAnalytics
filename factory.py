@@ -46,7 +46,6 @@ class Factory(object):
         return group
 
 
-
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
