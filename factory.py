@@ -29,6 +29,10 @@ class Factory(object):
         # feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
         c.train(feature_matrix, response_vector)
 
+    def predict(self):
+        c = Classify(self.config)
+
+
 
 if __name__ == '__main__':
     config_info = Config()

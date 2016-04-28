@@ -1,7 +1,6 @@
-from flask import Flask, request, session, g ,redirect, url_for, \
-    abort, render_template, send_from_directory
+from flask import Flask, request, render_template
 
-from factory import RecommenderFactory
+from factory import Factory
 from config import Config
 
 DEBUG = True

@@ -32,14 +32,24 @@ class Classify(object):
         self.classifier = KNeighborsClassifier(n_neighbors=3)
         self.classifier.fit(feature_matrix, response_vector)
 
-    def predict(self, test_matrix, response):
+    def predict(self, test_matrix):
         """
 
+        :param test_matrix:
+        :return: Predictions
+        """
+        predictions = self.classifier.predict(test_matrix)
+        return predictions
+
+    def evaluate(self, test_matrix, response):
+        """
+        Evaluate the classifier
         :param test_matrix:
         :param response:
         :return:
         """
-        predictions = self.classifier.predict(test_matrix)
+        self.train(test_matrix, response)
+        predictions = self.predict(test_matrix)
 
         false_count = 0
         true_count = 0
@@ -60,3 +70,10 @@ class Classify(object):
         """
         # SAVE MODEL
         pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, 'knn.dill'), 'wb'))
+
+    def load_classifier(self):
+        """
+
+        :return:
+        """
+        self.classifier = pickle.load(open(os.path.join(self.config.data_dir, 'knn.dill'), 'rb'))
