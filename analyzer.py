@@ -34,7 +34,13 @@ class Analyzer(object):
         :return:
         """
         self.data = self.data_frame[column_name].tolist()
-        self.response = self.data_frame['artunit'].tolist()
+
+        # Assign art unit to class 1, 2, or 3
+        self.data_frame['class'] = [0]*self.data_frame.shape[0]
+        self.data_frame[self.data_frame['artunit'].str[:2] == "36"]['class'] = 1
+        self.data_frame[self.data_frame['artunit'].str[:2] == "24"]['class'] = 2
+        self.data_frame[self.data_frame['artunit'].str[:2] == "21"]['class'] = 3
+        self.response = self.data_frame['class'].tolist()
 
     @staticmethod
     def tokenize(text):
@@ -73,7 +79,6 @@ class Analyzer(object):
         :param n_grams: Number of phrases to captures
         :return:
         """
-        # TODO: Load specific feature model if one is specified
 
         # Use loaded data to train
         if not self.data:
