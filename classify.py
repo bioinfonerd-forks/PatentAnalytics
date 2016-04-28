@@ -7,6 +7,7 @@ import os
 class Classify(object):
     def __init__(self, config):
         self.config = config
+        self.classifier = None
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):
@@ -28,22 +29,34 @@ class Classify(object):
         """
 
         # Make sure the number of examples is greater than number of predictors
-        knn = KNeighborsClassifier(n_neighbors=3)
-        knn.fit(feature_matrix, response_vector)
+        self.classifier = KNeighborsClassifier(n_neighbors=3)
+        self.classifier.fit(feature_matrix, response_vector)
 
-        # SAVE MODEL
-        pickle.dump(knn, open(os.path.join(self.config.data_dir, 'knn.dill'), 'wb'))
+    def predict(self, test_matrix, response):
+        """
 
-        predictions = knn.predict(feature_matrix)
+        :param test_matrix:
+        :param response:
+        :return:
+        """
+        predictions = self.classifier.predict(test_matrix)
 
         false_count = 0
         true_count = 0
 
         for i, predicted_class in enumerate(predictions):
-            if predicted_class == response_vector[i]:
+            if predicted_class == response[i]:
                 true_count += 1
             else:
                 false_count += 1
 
         print('True Classification %i percent', true_count/len(predictions))
         print('False Classification %i percent', false_count/len(predictions))
+
+    def save_classifier(self):
+        """
+
+        :return:
+        """
+        # SAVE MODEL
+        pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, 'knn.dill'), 'wb'))
