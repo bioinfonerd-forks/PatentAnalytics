@@ -1,5 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
+import dill as pickle
+import os
 
 
 class Classify(object):
@@ -17,8 +19,7 @@ class Classify(object):
         feature_matrix_reduced = pca.fit_transform(feature_matrix)
         return feature_matrix_reduced
 
-    @staticmethod
-    def train(feature_matrix, response_vector):
+    def train(self, feature_matrix, response_vector):
         """
         Train the model with the feature vector and response vector
         :param feature_matrix: blh
@@ -29,6 +30,10 @@ class Classify(object):
         # Make sure the number of examples is greater than number of predictors
         knn = KNeighborsClassifier(n_neighbors=3)
         knn.fit(feature_matrix, response_vector)
+
+        # SAVE MODEL
+        pickle.dump(knn, open(os.path.join(self.config.data_dir, 'knn.dill'), 'wb'))
+
         predictions = knn.predict(feature_matrix)
 
         false_count = 0
@@ -40,5 +45,5 @@ class Classify(object):
             else:
                 false_count += 1
 
-        ('True Classification %i percent').format(true_count/len(predictions))
-        ('False Classification %i percent').format(false_count/len(predictions))
+        print('True Classification %i percent', true_count/len(predictions))
+        print('False Classification %i percent', false_count/len(predictions))
