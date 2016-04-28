@@ -1,4 +1,5 @@
 from sklearn.decomposition import PCA
+from sklearn.neighbors import KNeighborsClassifier
 
 
 class Classify(object):
@@ -17,7 +18,7 @@ class Classify(object):
         return feature_matrix_reduced
 
     @staticmethod
-    def train(self, feature_matrix, response_vector):
+    def train(feature_matrix, response_vector):
         """
         Train the model with the feature vector and response vector
         :param feature_matrix: blh
@@ -26,5 +27,18 @@ class Classify(object):
         """
 
         # Make sure the number of examples is greater than number of predictors
-        pass
+        knn = KNeighborsClassifier(n_neighbors=3)
+        knn.fit(feature_matrix, response_vector)
+        predictions = knn.predict(feature_matrix)
 
+        false_count = 0
+        true_count = 0
+
+        for i, predicted_class in enumerate(predictions):
+            if predicted_class == response_vector[i]:
+                true_count += 1
+            else:
+                false_count += 1
+
+        ('True Classification %i percent').format(true_count/len(predictions))
+        ('False Classification %i percent').format(false_count/len(predictions))
