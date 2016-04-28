@@ -66,8 +66,8 @@ class Classify(object):
                 else:
                     false_count += 1
 
-        print('True Classification percent:', true_count/len(predictions))
-        print('False Classification percent:', false_count/len(predictions))
+            print('True Classification percent:', true_count/len(predictions))
+            print('False Classification percent:', false_count/len(predictions))
 
     def save_classifier(self):
         """
