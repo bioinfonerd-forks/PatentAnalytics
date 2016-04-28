@@ -38,8 +38,8 @@ class Analyzer(object):
         # Assign art unit to class 1, 2, or 3
         self.data_frame['class'] = [0]*self.data_frame.shape[0]
         self.data_frame.loc[self.data_frame['artunit'].str[:2] == "36", 'class'] = 1
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "24", 'class']['class'] = 2
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "21"]['class'] = 3
+        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "24", 'class'] = 2
+        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "21", 'class'] = 3
         self.response = self.data_frame['class'].tolist()
 
     @staticmethod
