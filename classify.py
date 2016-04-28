@@ -1,6 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
+import numpy as np
 import dill as pickle
 import os
 
@@ -45,10 +46,11 @@ class Classify(object):
     def evaluate(self, feature_matrix, response):
         """
         Evaluate the classifier
-        :param test_matrix:
+        :param feature_matrix:
         :param response:
         :return:
         """
+        response = np.asarray(response)
         cross_val = KFold(len(response), n_folds=8)
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
@@ -61,7 +63,7 @@ class Classify(object):
             true_count = 0
 
             for i, predicted_class in enumerate(predictions):
-                if predicted_class == response[i]:
+                if predicted_class == y_test[i]:
                     true_count += 1
                 else:
                     false_count += 1

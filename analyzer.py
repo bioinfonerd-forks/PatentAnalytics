@@ -99,8 +99,9 @@ class Analyzer(object):
         # Return the feature matrix for these items
         self.feature_matrix = tfs
 
-        # Save vector
+        # Save
         self.save_model(feature_name)
+        self.save_features(feature_name)
 
     def extract_features(self, n_grams, feature_name):
         """
