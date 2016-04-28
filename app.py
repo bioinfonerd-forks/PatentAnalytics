@@ -33,7 +33,7 @@ def submit_query():
         config = Config()
         f = Factory(config)
         group = f.predict(abstract)
-        return render_template('query.html', abstract=abstract, group=group)
+        return render_template('query.html', abstract=abstract, group=group[0])
     return render_template('query.html')
 
 if __name__ == "__main__":

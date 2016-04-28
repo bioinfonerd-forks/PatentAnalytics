@@ -5,14 +5,15 @@
 <h1>
     Welcome to the Patent Project Classification System
 </h1>
-</p>
+
  <form action="/query" method="POST">
-    <p><input type=text name=abstract placeholder="Abstract" />
+    <p><textarea type=text name=abstract placeholder="Abstract"></textarea></p>
     <p><input type=submit value=Submit /></p>
 </form>
 
 {% if abstract %}
 <p>Abstract: {{ abstract }}</p>
+{% endif %}
 
 {% if error %}
 <p><font color="red">{{ error }}</font></p>
