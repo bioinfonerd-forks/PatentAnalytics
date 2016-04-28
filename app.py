@@ -19,11 +19,6 @@ def home():
 
 @app.route('/query', methods=['POST', 'GET'])
 def submit_query():
-    config = Config(DEBUG)
-
-    keyword = None
-    object = None
-    predication = None
 
     if request.method == 'POST':
         # First search for subject
@@ -32,6 +27,9 @@ def submit_query():
         except KeyError:
             error = 'No keyword entered or could be found'
             return render_template('query.html', error=error)
+
+    config = Config()
+
 
     return render_template('query.html')
 

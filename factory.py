@@ -29,8 +29,21 @@ class Factory(object):
         # feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
         c.train(feature_matrix, response_vector)
 
-    def predict(self):
+    def predict(self, abstract):
+        """
+        Predict group of a single abstract
+        :param abstract:
+        :return:
+        """
+        a = Analyzer(self.config)
+        a.load_model('abstract')
+        feature_vector = a.transform(abstract)
+
         c = Classify(self.config)
+        c.load_classifier()
+
+        group = c.predict(feature_vector)
+        return group
 
 
 

@@ -116,6 +116,14 @@ class Analyzer(object):
         else:
             self.train_feature_model(n_grams, feature_name)
 
+    def transform(self, data):
+        """
+        Transform single data entry for web app
+        :param data:
+        :return:
+        """
+        return self.feature_model.transform(data)
+
     def save_model(self, feature_name):
         """
         Save the feature model into a pickled object
