@@ -65,4 +65,5 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    f.evaluate_performance('2015_2016_Patent_Data.csv')
+    feature_matrix, response_vector = f.analyze_abstract_data('2015_2016_Patent_Data.csv')
+    f.evaluate_performance(feature_matrix, response_vector)
