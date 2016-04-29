@@ -114,6 +114,7 @@ class Analyzer(object):
         elif os.path.isfile(self.config.get_model_path(feature_name)):
             self.load_model(feature_name)
             self.feature_matrix = self.feature_model.transform(self.data)
+            self.save_features(feature_name)
         else:
             self.train_feature_model(n_grams, feature_name)
 
@@ -151,7 +152,7 @@ class Analyzer(object):
 
     def load_features(self, feature_name):
         """
-        
+
         :param feature_name:
         :return:
         """
