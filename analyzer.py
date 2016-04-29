@@ -46,15 +46,9 @@ class Analyzer(object):
 
         # Assign art unit to class
         self.data_frame['class'] = [0]*self.data_frame.shape[0]
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "36", 'class'] = 36
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "24", 'class'] = 24
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "21", 'class'] = 21
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "16", 'class'] = 16
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "17", 'class'] = 17
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "26", 'class'] = 26
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "28", 'class'] = 28
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "29", 'class'] = 29
-        self.data_frame.loc[self.data_frame['artunit'].str[:2] == "37", 'class'] = 37
+        art_units = [36, 24, 21, 16, 17, 26, 28, 29, 37]
+        for art_unit in art_units:
+            self.data_frame.loc[self.data_frame['artunit'].str[:2] == str(artunit), 'class'] = artunit
 
         self.response = self.data_frame['class'].tolist()
 
