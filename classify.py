@@ -1,6 +1,5 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
@@ -84,6 +83,9 @@ class Classify(object):
         :param response:
         :return:
         """
+        parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
+        clf = grid_search.GridSearchCV(svr, parameters)
+
         response = np.asarray(response)
         cross_val = KFold(len(response), n_folds=32, shuffle=True)
         for train_index, test_index in cross_val:
