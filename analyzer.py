@@ -46,15 +46,13 @@ class Analyzer(object):
     @staticmethod
     def tokenize(text):
         """
-
+        Tokenizer that uses porter stemmer to stemm all works
         :param text:
         :return:
         """
         tokens = nltk.word_tokenize(text)
         stemmer = PorterStemmer()
-        stemmed = []
-        for item in tokens:
-            stemmed.append(stemmer.stem(item))
+        stemmed = [stemmer.stem(item) for item in tokens]
         return stemmed
 
     @staticmethod
@@ -65,7 +63,7 @@ class Analyzer(object):
         :return: The initialized TFIDF model
         """
         model = TfidfVectorizer(
-            ngram_range=(n_grams, n_grams),
+            ngram_range=(1, n_grams),
             stop_words='english',
             lowercase=True,
             strip_accents='unicode',
@@ -130,11 +128,11 @@ class Analyzer(object):
         """
         groups = np.unique(self.response)
         self.load_model('abstract')
-        vocabulary = self.feature_model.get_feature_names()
+        vocabulary = np.asarray(self.feature_model.get_feature_names())
         for group in groups:
             group_features = self.feature_matrix[self.response == group, :]
             group_means = group_features.mean(axis=0)
-            group_means[group_means > 0.02]
+            group_means[group_means > group_means.max()*0.9]
 
     def transform(self, data):
         """

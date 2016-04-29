@@ -17,7 +17,7 @@ class Factory(object):
         """
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        n_grams = 2
+        n_grams = 1
         self.analyzer.extract_features(n_grams, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
