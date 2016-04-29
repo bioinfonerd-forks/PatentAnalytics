@@ -41,8 +41,10 @@ class Classify(object):
 
         :return:
         """
-        classifiers = [KNeighborsClassifier(n_neighbors=3),
-                       MultinomialNB()]
+        classifiers = [
+            # KNeighborsClassifier(n_neighbors=3),
+            MultinomialNB()
+        ]
         for classifier in classifiers:
             self.classifier = classifier
             print(classifier)

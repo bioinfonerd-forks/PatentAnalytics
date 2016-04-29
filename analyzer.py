@@ -4,6 +4,7 @@ import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 import dill as pickle
+import numpy as np
 
 
 class Analyzer(object):
@@ -67,9 +68,10 @@ class Analyzer(object):
             ngram_range=(n_grams, n_grams),
             stop_words='english',
             lowercase=True,
-            strip_accents='ascii',
-            decode_error='ignore',
-            tokenizer=Analyzer.tokenize
+            strip_accents='unicode',
+            decode_error='replace',
+            tokenizer=Analyzer.tokenize,
+            norm='l2'
         )
         return model
 
@@ -126,8 +128,14 @@ class Analyzer(object):
 
         :return:
         """
-        self.feature_matrix.mean(axis=1)
-        self.feature_model
+        groups = np.unique(self.response)
+        self.load_model('abstract')
+        vocabulary = self.feature_model.get_feature_names()
+        for group in groups:
+            group_features = self.feature_matrix[self.response == group]
+            group_means = group_features.mean(axis=0)
+            group_means[group_means > 0.02]
+
 
     def transform(self, data):
         """
