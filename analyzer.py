@@ -99,6 +99,9 @@ class Analyzer(object):
         # Return the feature matrix for these items
         self.feature_matrix = tfs
 
+        # Print stats
+        print('Feature matrix', self.feature_matrix.shape)
+
         # Save
         self.save_model(feature_name)
         self.save_features(feature_name)
@@ -123,7 +126,8 @@ class Analyzer(object):
 
         :return:
         """
-        pass
+        self.feature_matrix.mean(axis=1)
+        self.feature_model
 
     def transform(self, data):
         """

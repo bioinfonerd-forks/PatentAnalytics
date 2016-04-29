@@ -8,6 +8,13 @@ class Factory(object):
         self.config = config
         self.analyzer = None
 
+    def data_heuristics(self, filename):
+        self.analyzer = Analyzer(self.config)
+        self.analyzer.load_patent_data(filename)
+        self.analyzer.extract_data('abstract')
+        self.analyzer.extract_features(2, 'abstract')
+        self.analyzer.heuristics()
+
     def analyze_abstract_data(self, filename):
         """
         Create the feature model and matrix for the abstract column
@@ -17,7 +24,7 @@ class Factory(object):
         self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(2, 'abstract')
+        self.analyzer.extract_features(1, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
     def evaluate_performance(self, feature_matrix, response_vector):
