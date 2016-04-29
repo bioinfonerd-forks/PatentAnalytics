@@ -30,6 +30,7 @@ class Analyzer(object):
                             (df.artunit.apply(str).str[:2] == "17") |
                             (df.artunit.apply(str).str[:2] == "26") |
                             (df.artunit.apply(str).str[:2] == "28") |
+                            (df.artunit.apply(str).str[:2] == "29") |
                             (df.artunit.apply(str).str[:2] == "37")
                             )]
         self.data_frame = selected_data
