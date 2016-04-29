@@ -122,7 +122,7 @@ class Analyzer(object):
         else:
             self.train_feature_model(n_grams, feature_name)
 
-    def heuristics(self):
+    def heuristics(self, column_name):
         """
         Determine the top words that govern selection to certain classes
         :return:
@@ -131,7 +131,7 @@ class Analyzer(object):
 
         # Load feature model if not loaded
         if not self.feature_model:
-            self.load_model('abstract')
+            self.load_model(column_name)
 
         # Get model vocabulary
         vocabulary = np.asarray(self.feature_model.get_feature_names())

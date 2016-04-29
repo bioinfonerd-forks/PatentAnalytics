@@ -28,7 +28,7 @@ class Factory(object):
         :return:
         """
         self.analyze_column_data(filename, column_name)
-        self.analyzer.heuristics()
+        self.analyzer.heuristics(column_name)
 
     def evaluate_performance(self, feature_matrix, response_vector):
         """
@@ -72,5 +72,6 @@ if __name__ == '__main__':
     file = '2015_2016_Patent_Data.csv'
 
     for column_name in ['title', 'abstract', 'claims']:
-        feature_matrix, response_vector = f.analyze_column_data(file, column_name)
-        f.evaluate_performance(feature_matrix, response_vector)
+        # feature_matrix, response_vector = f.analyze_column_data(file, column_name)
+        # f.evaluate_performance(feature_matrix, response_vector)
+        f.compute_heuristics(file, column_name)
