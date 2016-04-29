@@ -28,8 +28,8 @@ class Factory(object):
         :return:
         """
         c = Classify(self.config)
-        # feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
-        c.compare_classifiers(feature_matrix, response_vector)
+        feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
+        c.compare_classifiers(feature_matrix_reduced, response_vector)
 
     def train_classifier(self, feature_matrix, response_vector):
         """

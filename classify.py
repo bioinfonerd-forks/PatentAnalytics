@@ -1,6 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.neural_network import BernoulliRBM
 from sklearn import svm
 from sklearn.cross_validation import KFold
 import numpy as np
@@ -20,7 +21,7 @@ class Classify(object):
         :param feature_matrix: Dense nxp matrix
         :return: Reduced matrix with q*p features
         """
-        pca = PCA(n_components=0.5*feature_matrix.shape[1])
+        pca = PCA(n_components=feature_matrix.shape[1])
         feature_matrix_reduced = pca.fit_transform(feature_matrix)
         return feature_matrix_reduced
 
@@ -41,7 +42,7 @@ class Classify(object):
         :return:
         """
         classifiers = [KNeighborsClassifier(n_neighbors=3),
-                       MultinomialNB(), svm.SVC()]
+                       MultinomialNB(), BernoulliRBM()]
         for classifier in classifiers:
             self.classifier = classifier
             print(classifier)
