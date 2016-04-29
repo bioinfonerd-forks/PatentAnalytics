@@ -20,7 +20,7 @@ class Factory(object):
         self.analyzer.extract_features(1, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
-    def evalaute_performance(self, feature_matrix, response_vector):
+    def evaluate_performance(self, feature_matrix, response_vector):
         """
 
         :param feature_matrix:
@@ -38,6 +38,7 @@ class Factory(object):
         c = Classify(self.config)
         # feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
         c.train(feature_matrix, response_vector)
+        c.save_classifier()
 
     def predict(self, abstract):
         """
@@ -59,4 +60,4 @@ if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
     feature_matrix, response_vector = f.analyze_abstract_data('2016Patent_Data.csv')
-    f.evalaute_performance(feature_matrix, response_vector)
+    f.evaluate_performance(feature_matrix, response_vector)

@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+# from sassutils.wsgi import SassMiddleware
 
 from factory import Factory
 from config import Config
@@ -10,6 +11,9 @@ PASSWORD = 'default'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+# app.wsgi_app = SassMiddleware(app.wsgi_app, {
+#     'myapp': ('static/sass', 'static/css', '/static/css')
+# })
 
 
 @app.route('/')
