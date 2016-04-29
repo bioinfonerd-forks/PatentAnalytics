@@ -13,7 +13,7 @@ import os
 class Classify(object):
     def __init__(self, config):
         self.config = config
-        self.classifier = MultinomialNB()
+        self.classifier = MultinomialNB(alpha=0.01)
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):

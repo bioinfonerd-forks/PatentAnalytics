@@ -69,6 +69,6 @@ if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
     file = '2015_2016_Patent_Data.csv'
-    f.compute_heuristics(file)
-    # feature_matrix, response_vector = f.analyze_abstract_data(file)
-    # f.evaluate_performance(feature_matrix, response_vector)
+    # f.compute_heuristics(file)
+    feature_matrix, response_vector = f.analyze_abstract_data(file)
+    f.evaluate_performance(feature_matrix, response_vector)
