@@ -9,25 +9,25 @@ class Factory(object):
         self.analyzer = Analyzer(self.config)
         self.classify = Classify(self.config)
 
-    def analyze_abstract_data(self, filename):
+    def analyze_column_data(self, filename, column_name):
         """
         Create the feature model and matrix for the abstract column
         :param filename:
         :return:
         """
         self.analyzer.load_patent_data(filename)
-        self.analyzer.extract_data('abstract')
+        self.analyzer.extract_data(column_name)
         n_grams = 3
-        self.analyzer.extract_features(n_grams, 'abstract')
+        self.analyzer.extract_features(n_grams, column_name)
         return self.analyzer.feature_matrix, self.analyzer.response
 
-    def compute_heuristics(self, filename):
+    def compute_heuristics(self, filename, column_name):
         """
         Figure out what words make up the groups in the shit
         :param filename:
         :return:
         """
-        self.analyze_abstract_data(filename)
+        self.analyze_column_data(filename, column_name)
         self.analyzer.heuristics()
 
     def evaluate_performance(self, feature_matrix, response_vector):
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     f = Factory(config_info)
     file = '2015_2016_Patent_Data.csv'
     # f.compute_heuristics(file)
-    feature_matrix, response_vector = f.analyze_abstract_data(file)
+    feature_matrix, response_vector = f.analyze_column_data(file, 'abstract')
     f.evaluate_performance(feature_matrix, response_vector)
