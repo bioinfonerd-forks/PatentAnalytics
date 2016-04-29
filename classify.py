@@ -3,6 +3,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 import numpy as np
 import dill as pickle
 import os
@@ -34,6 +36,7 @@ class Classify(object):
         """
         selector = VarianceThreshold()
         selected_feature_matrix = selector.fit_transform(feature_matrix, response_vector)
+        selected_feature_matrix = SelectKBest(chi2, k=50000).fit_transform(selected_feature_matrix, response_vector)
         return selected_feature_matrix
 
     def train(self, feature_matrix, response_vector):

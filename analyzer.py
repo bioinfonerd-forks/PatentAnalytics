@@ -129,8 +129,14 @@ class Analyzer(object):
         :return:
         """
         groups = np.unique(self.response)
-        self.load_model('abstract')
+
+        # Load feature model if not loaded
+        if not self.feature_model:
+            self.load_model('abstract')
+
+        # Get model vocabulary
         vocabulary = np.asarray(self.feature_model.get_feature_names())
+
         for group in groups:
             group_features = self.feature_matrix[self.response == group, :]
             group_means = group_features.mean(axis=0)
