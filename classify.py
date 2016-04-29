@@ -2,6 +2,7 @@ from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
+from sklearn.feature_selection import VarianceThreshold
 import numpy as np
 import dill as pickle
 import os
@@ -22,6 +23,18 @@ class Classify(object):
         pca = PCA(n_components=feature_matrix.shape[1])
         feature_matrix_reduced = pca.fit_transform(feature_matrix)
         return feature_matrix_reduced
+
+    @staticmethod
+    def feature_selection(feature_matrix, response_vector):
+        """
+        Remove zero variance features
+        :param feature_matrix:
+        :param response_vector:
+        :return:
+        """
+        selector = VarianceThreshold()
+        selected_feature_matrix = selector.fit_transform(feature_matrix, response_vector)
+        return selected_feature_matrix
 
     def train(self, feature_matrix, response_vector):
         """

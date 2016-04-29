@@ -70,8 +70,8 @@ class Analyzer(object):
             decode_error='replace',
             tokenizer=Analyzer.tokenize,
             norm='l2',
-            min_df=10,
-            max_features=75000
+            min_df=5,
+            max_features=100000
         )
         return model
 
@@ -125,7 +125,7 @@ class Analyzer(object):
 
     def heuristics(self):
         """
-
+        Determine the top words that govern selection to certain classes
         :return:
         """
         groups = np.unique(self.response)
