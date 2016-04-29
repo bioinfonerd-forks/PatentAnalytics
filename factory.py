@@ -17,7 +17,8 @@ class Factory(object):
         """
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(1, 'abstract')
+        n_grams = 2
+        self.analyzer.extract_features(n_grams, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
     def compute_heuristics(self, filename):
@@ -65,5 +66,7 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    feature_matrix, response_vector = f.analyze_abstract_data('2015_2016_Patent_Data.csv')
-    f.evaluate_performance(feature_matrix, response_vector)
+    file = '2015_2016_Patent_Data.csv'
+    f.compute_heuristics(file)
+    # feature_matrix, response_vector = f.analyze_abstract_data(file)
+    # f.evaluate_performance(feature_matrix, response_vector)

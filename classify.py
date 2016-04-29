@@ -1,5 +1,6 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
 import numpy as np
 import dill as pickle
@@ -39,7 +40,7 @@ class Classify(object):
         :return:
         """
         classifiers = [
-            # KNeighborsClassifier(n_neighbors=3),
+            KNeighborsClassifier(n_neighbors=3),
             MultinomialNB()
         ]
         for classifier in classifiers:
