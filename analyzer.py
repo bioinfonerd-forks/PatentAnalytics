@@ -25,7 +25,13 @@ class Analyzer(object):
         df = DataFrame.from_csv(os.path.join(self.config.data_dir, filename))
         selected_data = df[((df.artunit.apply(str).str[:2] == "36") |
                             (df.artunit.apply(str).str[:2] == "24") |
-                            (df.artunit.apply(str).str[:2] == "21"))]
+                            (df.artunit.apply(str).str[:2] == "21") |
+                            (df.artunit.apply(str).str[:2] == "16") |
+                            (df.artunit.apply(str).str[:2] == "17") |
+                            (df.artunit.apply(str).str[:2] == "26") |
+                            (df.artunit.apply(str).str[:2] == "28") |
+                            (df.artunit.apply(str).str[:2] == "37")
+                            )]
         self.data_frame = selected_data
 
     def extract_data(self, column_name):
