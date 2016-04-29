@@ -1,8 +1,5 @@
 from sklearn.decomposition import PCA
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.neural_network import BernoulliRBM
-from sklearn import svm
 from sklearn.cross_validation import KFold
 import numpy as np
 import dill as pickle
@@ -12,7 +9,7 @@ import os
 class Classify(object):
     def __init__(self, config):
         self.config = config
-        self.classifier = None
+        self.classifier = MultinomialNB()
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):
@@ -67,25 +64,14 @@ class Classify(object):
         :return:
         """
         response = np.asarray(response)
-        cross_val = KFold(len(response), n_folds=8, shuffle=True)
+        cross_val = KFold(len(response), n_folds=16, shuffle=True)
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
             y_train, y_test = response[train_index], response[test_index]
 
             self.train(X_train, y_train)
-            predictions = self.predict(X_test)
-
-            false_count = 0
-            true_count = 0
-
-            for i, predicted_class in enumerate(predictions):
-                if predicted_class == y_test[i]:
-                    true_count += 1
-                else:
-                    false_count += 1
-
-            print('True Classification percent:', true_count/len(predictions))
-            print('False Classification percent:', false_count/len(predictions))
+            score = self.classifier.score(X_test, y_test)
+            print(score)
 
     def save_classifier(self):
         """

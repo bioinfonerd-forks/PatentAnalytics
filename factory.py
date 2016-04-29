@@ -6,14 +6,8 @@ from classify import Classify
 class Factory(object):
     def __init__(self, config):
         self.config = config
-        self.analyzer = None
-
-    def data_heuristics(self, filename):
         self.analyzer = Analyzer(self.config)
-        self.analyzer.load_patent_data(filename)
-        self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(1, 'abstract')
-        self.analyzer.heuristics()
+        self.classify = Classify(self.config)
 
     def analyze_abstract_data(self, filename):
         """
@@ -21,11 +15,19 @@ class Factory(object):
         :param filename:
         :return:
         """
-        self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
         self.analyzer.extract_features(1, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
+
+    def compute_heuristics(self, filename):
+        """
+        Figure out what words make up the groups in the shit
+        :param filename:
+        :return:
+        """
+        self.analyze_abstract_data(filename)
+        self.analyzer.heuristics()
 
     def evaluate_performance(self, feature_matrix, response_vector):
         """
@@ -34,18 +36,15 @@ class Factory(object):
         :param response_vector:
         :return:
         """
-        c = Classify(self.config)
-        c.compare_classifiers(feature_matrix, response_vector)
+        self.classify.evaluate(feature_matrix, response_vector)
 
-    def train_classifier(self, feature_matrix, response_vector):
+    def full_train(self, feature_matrix, response_vector):
         """
         GET THE CLASSIFIER TRAINED
         :return:
         """
-        c = Classify(self.config)
-        feature_matrix_reduced = c.reduce_dimensionality(feature_matrix.todense())
-        c.train(feature_matrix_reduced, response_vector)
-        c.save_classifier()
+        self.classify.train(feature_matrix, response_vector)
+        self.classify.save_classifier()
 
     def predict(self, abstract):
         """
@@ -66,4 +65,4 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    f.data_heuristics('2015_2016_Patent_Data.csv')
+    f.evaluate_performance('2015_2016_Patent_Data.csv')
