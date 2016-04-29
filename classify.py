@@ -37,7 +37,7 @@ class Classify(object):
         """
         selector = VarianceThreshold()
         selected_feature_matrix = selector.fit_transform(feature_matrix, response_vector)
-        selected_feature_matrix = SelectKBest(chi2, k=0.9*feature_matrix.shape[1]).fit_transform(selected_feature_matrix, response_vector)
+        selected_feature_matrix = SelectKBest(chi2, k=int(0.9*feature_matrix.shape[1])).fit_transform(selected_feature_matrix, response_vector)
         return selected_feature_matrix
 
     def train(self, feature_matrix, response_vector):
