@@ -40,35 +40,37 @@ class Factory(object):
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.compare_classifiers(feature_matrix, response_vector)
 
-    def full_train(self, feature_matrix, response_vector):
+    def full_train(self, feature_matrix, response_vector, column_name):
         """
         GET THE CLASSIFIER TRAINED
+        :param feature_matrix:
+        :param response_vector:
+        :param column_name:
         :return:
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.train(feature_matrix, response_vector)
-        self.classify.save_classifier()
+        self.classify.save_classifier(column_name)
 
-    def predict(self, abstract):
+    def predict(self, entry, column_name):
         """
-        Predict group of a single abstract
+        Predict group of a single entry
         :param abstract:
         :return:
         """
-        a = Analyzer(self.config)
-        a.load_model('abstract')
-        feature_vector = a.transform(abstract)
+        self.analyzer.load_model(column_name)
+        feature_vector = self.analyzer.transform(entry)
 
-        c = Classify(self.config)
-        c.load_classifier()
+        self.classify.load_classifier(column_name)
 
-        group = c.predict(feature_vector)
+        group = self.classify.predict(feature_vector)
         return group
 
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
     file = '2015_2016_Patent_Data.csv'
-    # f.compute_heuristics(file)
-    feature_matrix, response_vector = f.analyze_column_data(file, 'abstract')
-    f.evaluate_performance(feature_matrix, response_vector)
+
+    for column_name in ['title', 'abstract', 'claims']:
+        feature_matrix, response_vector = f.analyze_column_data(file, column_name)
+        f.full_train(feature_matrix, response_vector, column_name)
