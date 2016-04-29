@@ -24,17 +24,8 @@ class Analyzer(object):
         """
         df = DataFrame.from_csv(os.path.join(self.config.data_dir, filename))
         df.dropna(how='any')
-        selected_data = df[((df.artunit.apply(str).str[:2] == "36") |
-                            (df.artunit.apply(str).str[:2] == "24") |
-                            (df.artunit.apply(str).str[:2] == "21") |
-                            (df.artunit.apply(str).str[:2] == "16") |
-                            (df.artunit.apply(str).str[:2] == "17") |
-                            (df.artunit.apply(str).str[:2] == "26") |
-                            (df.artunit.apply(str).str[:2] == "28") |
-                            (df.artunit.apply(str).str[:2] == "29") |
-                            (df.artunit.apply(str).str[:2] == "37")
-                            )]
-        self.data_frame = selected_data
+
+        self.data_frame = df[[x.startswith(self.config.art_units) for x in df.artunit]]
 
     def extract_data(self, column_name):
         """
@@ -46,9 +37,8 @@ class Analyzer(object):
 
         # Assign art unit to class
         self.data_frame['class'] = [0]*self.data_frame.shape[0]
-        art_units = [36, 24, 21, 16, 17, 26, 28, 29, 37]
-        for art_unit in art_units:
-            self.data_frame.loc[self.data_frame['artunit'].str[:2] == str(artunit), 'class'] = artunit
+        for art_unit in self.config.art_units:
+            self.data_frame.loc[self.data_frame['artunit'].str[:2] == str(art_unit), 'class'] = art_unit
 
         self.response = self.data_frame['class'].tolist()
 
