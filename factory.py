@@ -12,7 +12,7 @@ class Factory(object):
         self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(2, 'abstract')
+        self.analyzer.extract_features(1, 'abstract')
         self.analyzer.heuristics()
 
     def analyze_abstract_data(self, filename):
