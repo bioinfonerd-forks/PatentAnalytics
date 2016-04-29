@@ -92,17 +92,17 @@ class Classify(object):
             score = self.classifier.score(X_test, y_test)
             print(score)
 
-    def save_classifier(self):
+    def save_classifier(self, column_name):
         """
-
+        :param column_name:
         :return:
         """
         # SAVE MODEL
-        pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, 'knn.dill'), 'wb'))
+        pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'wb'))
 
-    def load_classifier(self):
+    def load_classifier(self, column_name):
         """
-
+        :param column_name:
         :return:
         """
-        self.classifier = pickle.load(open(os.path.join(self.config.data_dir, 'knn.dill'), 'rb'))
+        self.classifier = pickle.load(open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'rb'))

@@ -43,16 +43,20 @@ def submit_query():
     f = Factory(config)
 
     if title:
+        f.classify.load_classifier('title')
         title_group = f.predict(title)
 
     if abstract:
+        f.classify.load_classifier('abstract')
         abstract_group = f.predict(abstract)
 
     if claims:
+        f.classify.load_classifier('claims')
         claims_group = f.predict(claims)
 
-
-    return render_template('query.html', abstract=abstract, group=group[0])
+    return render_template('query.html', abstract=abstract, abstract_group=abstract_group[0],
+                           title=title, title_group=title_group,
+                           claims=claims, claims_group=claims_group)
 
 if __name__ == "__main__":
     app.run()
