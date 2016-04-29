@@ -69,7 +69,9 @@ class Analyzer(object):
             strip_accents='unicode',
             decode_error='replace',
             tokenizer=Analyzer.tokenize,
-            norm='l2'
+            norm='l2',
+            min_df=10,
+            max_features=75000
         )
         return model
 
