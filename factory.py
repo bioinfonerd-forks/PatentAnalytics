@@ -38,7 +38,7 @@ class Factory(object):
         :return:
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        self.classify.evaluate(feature_matrix, response_vector)
+        self.classify.compare_classifiers(feature_matrix, response_vector)
 
     def full_train(self, feature_matrix, response_vector):
         """

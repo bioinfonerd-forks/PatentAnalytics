@@ -1,6 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import SGDClassifier
 from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import SelectKBest
@@ -56,8 +57,9 @@ class Classify(object):
         :return:
         """
         classifiers = [
-            KNeighborsClassifier(n_neighbors=3),
-            MultinomialNB()
+            # KNeighborsClassifier(n_neighbors=2),
+            MultinomialNB(alpha=0.01),
+            SGDClassifier()
         ]
         for classifier in classifiers:
             self.classifier = classifier
@@ -81,7 +83,7 @@ class Classify(object):
         :return:
         """
         response = np.asarray(response)
-        cross_val = KFold(len(response), n_folds=16, shuffle=True)
+        cross_val = KFold(len(response), n_folds=32, shuffle=True)
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
             y_train, y_test = response[train_index], response[test_index]
