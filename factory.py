@@ -17,7 +17,7 @@ class Factory(object):
         self.analyzer = Analyzer(self.config)
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data('abstract')
-        self.analyzer.extract_features(1, 'abstract')
+        self.analyzer.extract_features(2, 'abstract')
         return self.analyzer.feature_matrix, self.analyzer.response
 
     def evaluate_performance(self, feature_matrix, response_vector):
@@ -59,5 +59,5 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    feature_matrix, response_vector = f.analyze_abstract_data('2016Patent_Data.csv')
+    feature_matrix, response_vector = f.analyze_abstract_data('2015_2016_Patent_Data.csv')
     f.evaluate_performance(feature_matrix, response_vector)
