@@ -118,6 +118,13 @@ class Analyzer(object):
         else:
             self.train_feature_model(n_grams, feature_name)
 
+    def heuristics(self):
+        """
+
+        :return:
+        """
+        pass
+
     def transform(self, data):
         """
         Transform single data entry for web app

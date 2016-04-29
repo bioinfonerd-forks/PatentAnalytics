@@ -1,5 +1,6 @@
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.cross_validation import KFold
 import numpy as np
 import dill as pickle
@@ -31,8 +32,19 @@ class Classify(object):
         """
 
         # Make sure the number of examples is greater than number of predictors
-        self.classifier = KNeighborsClassifier(n_neighbors=3)
         self.classifier.fit(feature_matrix, response_vector)
+
+    def compare_classifiers(self, feature_matrix, response):
+        """
+
+        :return:
+        """
+        classifiers = [KNeighborsClassifier(n_neighbors=3),
+                       MultinomialNB()]
+        for classifier in classifiers:
+            self.classifier = classifier
+            print(classifier)
+            self.evaluate(feature_matrix, response)
 
     def predict(self, test_matrix):
         """
