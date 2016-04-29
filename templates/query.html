@@ -10,18 +10,29 @@
 </h1>
 
  <form action="/query" method="POST">
-    <p><textarea type=text name=abstract placeholder="Abstract"></textarea></p>
+     <p><textarea type=text name=title placeholder="Title"></textarea></p>
+     <p><textarea type=text name=abstract placeholder="Abstract"></textarea></p>
+     <p><textarea type=text name=claims placeholder="Claims"></textarea></p>
     <p><input type=submit value=Submit /></p>
 </form>
 
+{% if title %}
+<p>Title: {{ title }}</p>
+<p>Group Number: {{ title_group }}</p>
+{% endif %}
+
 {% if abstract %}
 <p>Abstract: {{ abstract }}</p>
+<p>Group Number: {{ abstract_group }}</p>
+{% endif %}
+
+{% if claims %}
+<p>Claims: {{ claims }}</p>
+<p>Group Number: {{ claims_group }}</p>
 {% endif %}
 
 {% if error %}
 <p><font color="red">{{ error }}</font></p>
-{% elif group %}
-<p>Group Number: {{ group|safe }}</p>
 {% endif %}
 
 

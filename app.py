@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-# from sassutils.wsgi import SassMiddleware
 
 from factory import Factory
 from config import Config
@@ -11,9 +10,6 @@ PASSWORD = 'default'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-# app.wsgi_app = SassMiddleware(app.wsgi_app, {
-#     'myapp': ('static/sass', 'static/css', '/static/css')
-# })
 
 
 @app.route('/')
@@ -23,22 +19,40 @@ def home():
 
 @app.route('/query', methods=['POST', 'GET'])
 def submit_query():
+    title = None
     abstract = None
+    claims = None
 
     if request.method == 'POST':
-        # First search for subject
+        try:
+            title = request.form['title']
+        except KeyError:
+            pass
+
         try:
             abstract = request.form['abstract']
         except KeyError:
-            error = 'No keyword entered or could be found'
-            return render_template('query.html', error=error)
+            pass
+
+        try:
+            claims = request.form['claims']
+        except KeyError:
+            pass
+
+    config = Config()
+    f = Factory(config)
+
+    if title:
+        title_group = f.predict(title)
 
     if abstract:
-        config = Config()
-        f = Factory(config)
-        group = f.predict(abstract)
-        return render_template('query.html', abstract=abstract, group=group[0])
-    return render_template('query.html')
+        abstract_group = f.predict(abstract)
+
+    if claims:
+        claims_group = f.predict(claims)
+
+
+    return render_template('query.html', abstract=abstract, group=group[0])
 
 if __name__ == "__main__":
     app.run()
