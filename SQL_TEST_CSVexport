@@ -31,6 +31,8 @@ for p in matchedtext:
     try:
         #time.sleep(0.05)
         cleanmatchedtext = matchedtext[i-2].replace("&", "and")
+        cleanmatchedtext= cleanmatchedtext.replace("<\i>","")
+        cleanmatchedtext= cleanmatchedtext.replace("<i>","")
         xmldoc=xml.dom.minidom.parseString(cleanmatchedtext)
         grantdata=xmldoc.childNodes[1]
         bibdata=grantdata.childNodes[0]
