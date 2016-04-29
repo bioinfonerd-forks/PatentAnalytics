@@ -23,6 +23,7 @@ class Analyzer(object):
         :return:
         """
         df = DataFrame.from_csv(os.path.join(self.config.data_dir, filename))
+        df.dropna(how='any')
         selected_data = df[((df.artunit.apply(str).str[:2] == "36") |
                             (df.artunit.apply(str).str[:2] == "24") |
                             (df.artunit.apply(str).str[:2] == "21") |
