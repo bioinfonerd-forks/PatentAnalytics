@@ -150,4 +150,9 @@ class Analyzer(object):
         pickle.dump(self.feature_matrix, open(self.config.get_matrix_path(feature_name), 'wb'))
 
     def load_features(self, feature_name):
+        """
+        
+        :param feature_name:
+        :return:
+        """
         self.feature_matrix = pickle.load(open(self.config.get_matrix_path(feature_name), 'rb'))
