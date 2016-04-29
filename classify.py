@@ -51,7 +51,7 @@ class Classify(object):
         :return:
         """
         response = np.asarray(response)
-        cross_val = KFold(len(response), n_folds=8)
+        cross_val = KFold(len(response), n_folds=8, shuffle=True)
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
             y_train, y_test = response[train_index], response[test_index]
