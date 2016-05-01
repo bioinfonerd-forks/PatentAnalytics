@@ -5,6 +5,7 @@ from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
+from sklearn.grid_search import GridSearchCV
 import numpy as np
 import dill as pickle
 import os
@@ -62,9 +63,16 @@ class Classify(object):
             MultinomialNB(alpha=0.01),
             SGDClassifier()
         ]
-        for classifier in classifiers:
-            self.classifier = classifier
+
+        parameters = [
+            {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1]},
+            {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
+             'niter': [5, 500, 5000]}
+        ]
+        for classifier, i in enumerate(classifiers):
             print(classifier)
+            clf = GridSearchCV(classifier, parameters[i])
+            self.classifier = classifier(clf.best_params_)
             self.evaluate(feature_matrix, response)
 
     def predict(self, test_matrix):
@@ -83,8 +91,6 @@ class Classify(object):
         :param response:
         :return:
         """
-        parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
-        clf = grid_search.GridSearchCV(svr, parameters)
 
         response = np.asarray(response)
         cross_val = KFold(len(response), n_folds=32, shuffle=True)
