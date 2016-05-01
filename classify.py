@@ -72,6 +72,7 @@ class Classify(object):
         for classifier, i in enumerate(classifiers):
             print(classifier)
             clf = GridSearchCV(classifier, parameters[i])
+            print(clf.best_params_)
             self.classifier = classifier(clf.best_params_)
             self.evaluate(feature_matrix, response)
 
