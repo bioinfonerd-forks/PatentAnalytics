@@ -101,7 +101,7 @@ class Classify(object):
             y_train, y_test = response[train_index], response[test_index]
 
             self.train(X_train, y_train)
-            score = [score, self.classifier.score(X_test, y_test)]
+            score = np.append(self.classifier.score(X_test, y_test), score)
         print('Classifier Mean Cross Val Score:', np.mean(score))
 
     def save_classifier(self, column_name):
