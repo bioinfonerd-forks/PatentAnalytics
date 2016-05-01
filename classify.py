@@ -67,7 +67,7 @@ class Classify(object):
         parameters = [
             {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1]},
             {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
-             'niter': [5, 500, 5000]}
+             'n_iter': [5, 500, 5000]}
         ]
         for i, classifier in enumerate(classifiers):
             clf = GridSearchCV(classifier, parameters[i])
