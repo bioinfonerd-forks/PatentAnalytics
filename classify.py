@@ -70,10 +70,10 @@ class Classify(object):
              'niter': [5, 500, 5000]}
         ]
         for i, classifier in enumerate(classifiers):
-            print(classifier)
             clf = GridSearchCV(classifier, parameters[i])
+            clf.fit(feature_matrix, response)
             print(clf.best_params_)
-            self.classifier = classifier(clf.best_params_)
+            self.classifier = clf.best_estimator_
             self.evaluate(feature_matrix, response)
 
     def predict(self, test_matrix):
