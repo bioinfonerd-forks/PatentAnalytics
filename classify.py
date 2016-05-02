@@ -77,8 +77,8 @@ class Classify(object):
         :return:
         """
         best_score = 0
-        for classifier in self.classifiers.keys():
-            clf = self.classifiers[classifier][0]
+        for clf_name in self.classifiers.keys():
+            clf = self.classifiers[clf_name][0]
             score = self.evaluate_classifier(feature_matrix, response, clf)
             if score > best_score:
                 self.classifier = clf
@@ -96,8 +96,8 @@ class Classify(object):
                                                                  train_sizes=train_sizes, cv=cross_val,
                                                                  n_jobs=4)
 
-        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
-        return np.mean(valid_scores[:-1], axis=0)
+        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
+        return np.mean(valid_scores[:-1])
 
     def train(self, feature_matrix, response_vector):
         """
@@ -135,11 +135,3 @@ class Classify(object):
         :return:
         """
         self.classifier = pickle.load(open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'rb'))
-
-
-class Classifier(object):
-    def __init__(self, config, name, estimator, param_grid):
-        self.config = config
-        self.name = name
-        self.estimator = estimator
-        self.param_grid = param_grid
