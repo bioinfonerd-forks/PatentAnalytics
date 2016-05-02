@@ -10,12 +10,14 @@ from sklearn.grid_search import GridSearchCV
 import numpy as np
 import dill as pickle
 import os
+from results import Results
 
 
 class Classify(object):
     def __init__(self, config):
         self.config = config
-        self.classifier = MultinomialNB(alpha=0.01)
+        self.classifier = None
+        self.results = Results(config)
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):
@@ -54,7 +56,7 @@ class Classify(object):
 
         # TODO Get classifier error
 
-    def compare_classifiers(self, feature_matrix, response):
+    def classifier_selection(self, feature_matrix, response):
         """
 
         :return:
@@ -73,12 +75,13 @@ class Classify(object):
         ]
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-
+        best_score = 0
         for i, classifier in enumerate(classifiers):
             clf = GridSearchCV(classifier, parameters[i], cv=cross_val)
             clf.fit(feature_matrix, response)
-            print(clf.best_params_)
-            self.classifier = clf.best_estimator_
+            print(classifier, clf.best_params_)
+            if clf.best_score_ > best_score:
+                self.classifier = clf.best_estimator_
 
     def predict(self, test_matrix):
         """
