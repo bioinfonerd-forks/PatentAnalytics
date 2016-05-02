@@ -65,15 +65,15 @@ class Classify(object):
         ]
 
         parameters = [
-            {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1]},
+            {'alpha': [0.001, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1]},
             {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
-             'niter': [5, 500, 5000]}
+             'n_iter': [1, 5, 100, 500, 1000, 5000]}
         ]
         for i, classifier in enumerate(classifiers):
-            print(classifier)
             clf = GridSearchCV(classifier, parameters[i])
+            clf.fit(feature_matrix, response)
             print(clf.best_params_)
-            self.classifier = classifier(clf.best_params_)
+            self.classifier = clf.best_estimator_
             self.evaluate(feature_matrix, response)
 
     def predict(self, test_matrix):
@@ -95,13 +95,14 @@ class Classify(object):
 
         response = np.asarray(response)
         cross_val = KFold(len(response), n_folds=32, shuffle=True)
+        score = []
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
             y_train, y_test = response[train_index], response[test_index]
 
             self.train(X_train, y_train)
-            score = self.classifier.score(X_test, y_test)
-            print(score)
+            score = np.append(self.classifier.score(X_test, y_test), score)
+        print('Classifier Mean Cross Val Score:', np.mean(score))
 
     def save_classifier(self, column_name):
         """
