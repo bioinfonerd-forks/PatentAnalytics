@@ -22,9 +22,9 @@ class Classify(object):
         self.classifier = None
         self.results = Results(config)
         self.classifiers = {
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 0.2, 0.001)}],
-            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0001, 0.00001),
-                                      'l1_ratio': np.arange(0.5, 0.9, 0.1),
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
+            'sgd': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
+                                      'l1_ratio': np.arange(0.1, 0.9, 0.1),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
             'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
@@ -54,29 +54,47 @@ class Classify(object):
         selected_feature_matrix = SelectKBest(chi2, k=int(0.9*feature_matrix.shape[1])).fit_transform(selected_feature_matrix, response_vector)
         return selected_feature_matrix
 
-    def classifier_selection(self, feature_matrix, response):
+    def optimize_classifier(self, feature_matrix, response, classifier, parameter_grid):
         """
 
+        :param feature_matrix:
+        :param response:
+        :param classifier:
+        :return:
+        """
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
+        clf.fit(feature_matrix, response)
+        self.classifier = clf.best_estimator_
+
+    def classifier_selection(self, feature_matrix, response):
+        """
+        Select the classifier with the lowest error
         :return:
         """
 
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
-        clf_results = dict()
-        best_estimators = dict()
         for classifier in self.classifiers.keys():
-            clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val, n_jobs=4)
-            clf.fit(feature_matrix, response)
-            best_estimators[classifier] = clf
-            if clf.best_score_ > best_score:
-                self.classifier = clf.best_estimator_
+            clf = self.classifiers[classifier][0]
+            score = self.evaluate_classifier(feature_matrix, response, clf)
+            if score > best_score:
+                self.classifier = clf
 
-            # Output results
-            print(classifier, clf.best_params_, clf.best_score_)
-            clf_results[classifier] = clf.best_params_
+    def evaluate_classifier(self, feature_matrix, response, classifier):
+        """
+        Evaluate the classifier input with learning curve and cross validation
+        :param feature_matrix:
+        :param response:
+        :return:
+        """
+        train_sizes = np.arange(20000, feature_matrix.shape[1], 10000)
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
+                                                                 train_sizes=train_sizes, cv=cross_val,
+                                                                 n_jobs=4)
 
-        # Grid results to results class
-        self.evaluate_classifiers(feature_matrix, response, classifiers=best_estimators)
+        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
+        return np.mean(valid_scores[:-1], axis=0)
 
     def train(self, feature_matrix, response_vector):
         """
@@ -99,35 +117,6 @@ class Classify(object):
         """
         predictions = self.classifier.predict(test_matrix)
         return predictions
-
-    def evaluate_classifiers(self, feature_matrix, response, classifiers=None):
-        """
-        Evaluate the classifier
-        :param feature_matrix:
-        :param response:
-        :return:
-        """
-        train_scores = dict()
-        valid_scores = dict()
-        train_sizes = np.arange(20000, feature_matrix.shape[1], 10000)
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
-
-        if classifiers:
-            clfs = classifiers
-        else:
-            clfs = self.classifiers
-
-        for classifier in clfs:
-            if type(clf[classifier]) == 'list':
-                clf = clfs[classifier][0]
-            else:
-                clf = clfs[classifier]
-
-            train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
-                                                                                             train_sizes=train_sizes, cv=cross_val,
-                                                                                             n_jobs=4)
-
-        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
 
     def save_classifier(self, column_name):
         """
