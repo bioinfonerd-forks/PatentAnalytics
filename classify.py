@@ -11,7 +11,6 @@ from sklearn.feature_selection import chi2
 from sklearn.grid_search import GridSearchCV
 import numpy as np
 import dill as pickle
-import os
 from results import Results
 from sklearn.learning_curve import learning_curve
 

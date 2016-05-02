@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 
 class Config(object):
@@ -11,8 +12,8 @@ class Config(object):
         self.matrix_name = '_feature_matrix.dill'
         self.art_units = (
             "36", "24", "21",
-            # "16", "17", "26",
-            # "28", "29", "37"
+            "16", "17", "26",
+            "28", "29", "37"
         )
 
     def get_model_path(self, feature_name):
@@ -22,4 +23,5 @@ class Config(object):
         return os.path.join(self.data_dir, feature_name + self.matrix_name)
 
     def get_classifier_path(self, clf_name):
-        return open(os.path.join(self.classifier_dir, clf_name + '_classifier.dill'))
+        today = date.today().isoformat()
+        return open(os.path.join(self.classifier_dir, clf_name + today + '.dill'))
