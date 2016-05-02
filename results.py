@@ -25,10 +25,7 @@ class Results(object):
         :param valid_scores:
         :return:
         """
-        i = 0
-        for classifier in train_scores.keys():
-            plt.plot(train_sizes, np.mean(train_scores[classifier], axis=1), '.-', label=classifier + ' Train Score')
-            plt.plot(train_sizes, np.mean(valid_scores[classifier], axis=1),  '.-', label=classifier + ' CV Score')
-            i += 2
+        plt.plot(train_sizes, np.mean(train_scores[classifier], axis=1), '.-', label=classifier + ' Train Score')
+        plt.plot(train_sizes, np.mean(valid_scores[classifier], axis=1),  '.-', label=classifier + ' CV Score')
         plt.legend()
         plt.show()
