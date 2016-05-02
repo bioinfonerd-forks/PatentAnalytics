@@ -114,7 +114,6 @@ class Classify(object):
             train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
                                                                                              train_sizes=train_sizes, cv=cross_val,
                                                                                              n_jobs=4)
-            pass
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
 

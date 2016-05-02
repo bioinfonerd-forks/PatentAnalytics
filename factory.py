@@ -51,7 +51,7 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.train(feature_matrix, response_vector)
-        self.classify.evaluate(feature_matrix, response_vector)
+        self.classify.evaluate_classifiers(feature_matrix, response_vector)
         self.classify.save_classifier(column_name)
 
     def predict(self, entry, column_name):
