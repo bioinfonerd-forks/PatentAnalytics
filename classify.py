@@ -15,6 +15,7 @@ import os
 from results import Results
 from sklearn.learning_curve import learning_curve
 
+
 class Classify(object):
     def __init__(self, config):
         self.config = config
@@ -61,20 +62,19 @@ class Classify(object):
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
-        results = dict()
-        # for classifier in classifiers.keys():
-        classifier = 'bayes'
-        clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
-        clf.fit(feature_matrix, response)
-        if clf.best_score_ > best_score:
-            self.classifier = clf.best_estimator_
+        clf_results = dict()
+        for classifier in classifiers.keys():
+            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
+            clf.fit(feature_matrix, response)
+            if clf.best_score_ > best_score:
+                self.classifier = clf.best_estimator_
 
-        # Output results
-        print(classifier, clf.best_params_, clf.best_score_)
-        results['classifier'] = clf.grid_scores_
+            # Output results
+            print(classifier, clf.best_params_, clf.best_score_)
+            clf_results[classifier] = clf.grid_scores_
 
         # Grid results to results class
-        self.results.plot_clasifier_comparison(results)
+        self.results.plot_classifier_comparison(clf_results)
 
     def train(self, feature_matrix, response_vector):
         """
