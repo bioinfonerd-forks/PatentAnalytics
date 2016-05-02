@@ -63,9 +63,11 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
         clf_results = dict()
+        best_estimators = []
         for classifier in self.classifiers.keys():
             clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val, n_jobs=4)
             clf.fit(feature_matrix, response)
+            best_estimators.append(clf)
             if clf.best_score_ > best_score:
                 self.classifier = clf.best_estimator_
 
@@ -74,7 +76,7 @@ class Classify(object):
             clf_results[classifier] = clf.best_params_
 
         # Grid results to results class
-        self.results.plot_classifier_comparison(clf_results)
+        self.evaluate_classifiers(feature_matrix, response, classifiers=best_estimators)
 
     def train(self, feature_matrix, response_vector):
         """
@@ -98,7 +100,7 @@ class Classify(object):
         predictions = self.classifier.predict(test_matrix)
         return predictions
 
-    def evaluate_classifiers(self, feature_matrix, response):
+    def evaluate_classifiers(self, feature_matrix, response, classifiers=None):
         """
         Evaluate the classifier
         :param feature_matrix:
@@ -109,7 +111,13 @@ class Classify(object):
         valid_scores = dict()
         train_sizes = np.arange(20000, feature_matrix.shape[1], 10000)
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        for classifier in self.classifiers:
+
+        if classifiers:
+            clfs = classifiers
+        else:
+            clfs = self.classifiers
+
+        for classifier in clfs:
             clf = self.classifiers[classifier][0]
             train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
                                                                                              train_sizes=train_sizes, cv=cross_val,

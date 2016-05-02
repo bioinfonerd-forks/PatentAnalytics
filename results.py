@@ -11,9 +11,6 @@ class Results(object):
         scores = [x.mean_validation_score for x in classifier_grid_scores]
         plt.plot(parms, scores, '.')
 
-    def plot_classifier_comparison(self, learning_curves):
-        pass
-
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores):
         line_colors = plt.cm.Spectral(np.linspace(0,1,len(train_scores.keys())*2))
         i = 0
