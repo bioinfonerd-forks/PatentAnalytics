@@ -107,7 +107,7 @@ class Classify(object):
         """
         train_scores = dict()
         valid_scores = dict()
-        train_sizes = np.arange(20000, feature_matrix.shape[0], 10000)
+        train_sizes = np.arange(20000, feature_matrix.shape[1], 10000)
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         for classifier in self.classifiers:
             clf = self.classifiers[classifier][0]

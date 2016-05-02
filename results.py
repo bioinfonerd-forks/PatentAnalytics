@@ -15,6 +15,7 @@ class Results(object):
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores):
         for classifier in train_scores.keys():
-            plt.plot(train_sizes, train_scores[classifier], label=classifier + 'Train Score')
-            plt.plot(train_sizes, valid_scores[classifier], label=classifier + 'CV Score')
+            plt.plot(train_sizes, train_scores[classifier], '.-', label=classifier + 'Train Score')
+            plt.plot(train_sizes, valid_scores[classifier],  '.-', label=classifier + 'CV Score')
+        plt.legend()
         plt.show()
