@@ -21,6 +21,14 @@ class Classify(object):
         self.config = config
         self.classifier = None
         self.results = Results(config)
+        self.classifiers = {
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 0.2, 0.001)}],
+            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0001, 0.00001),
+                                      'l1_ratio': np.arange(0.5, 0.9, 0.1),
+                                      'n_iter': [8], 'penalty': ['elasticnet']}],
+            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
+        }
 
     @staticmethod
     def reduce_dimensionality(feature_matrix):
@@ -51,27 +59,19 @@ class Classify(object):
 
         :return:
         """
-        classifiers = {
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 0.2, 0.001)}],
-            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0001, 0.00001),
-                                      'l1_ratio': np.arange(0.5, 0.9, 0.1),
-                                      'n_iter': [8], 'penalty': ['elasticnet']}],
-            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
-            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
-        }
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
         clf_results = dict()
-        for classifier in classifiers.keys():
-            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
+        for classifier in self.classifiers.keys():
+            clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val)
             clf.fit(feature_matrix, response)
             if clf.best_score_ > best_score:
                 self.classifier = clf.best_estimator_
 
             # Output results
             print(classifier, clf.best_params_, clf.best_score_)
-            clf_results[classifier] = clf.grid_scores_
+            clf_results[classifier] = clf.best_params_
 
         # Grid results to results class
         self.results.plot_classifier_comparison(clf_results)
@@ -98,15 +98,22 @@ class Classify(object):
         predictions = self.classifier.predict(test_matrix)
         return predictions
 
-    def evaluate(self, feature_matrix, response):
+    def evaluate_classifiers(self, feature_matrix, response):
         """
         Evaluate the classifier
         :param feature_matrix:
         :param response:
         :return:
         """
-        train_sizes, train_scores, valid_scores = learning_curve(self.classifier, feature_matrix, response,
-                                                                 train_sizes=np.arange(20000, 130000, 10000), cv=10)
+        train_scores = dict()
+        valid_scores = dict()
+        train_sizes = np.arange(20000, 130000, 10000)
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        for classifier in self.classifiers:
+            clf = self.classifiers[classifier]
+            train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
+                                                                                             train_sizes=train_sizes, cv=cross_val)
+
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
 
     def save_classifier(self, column_name):
