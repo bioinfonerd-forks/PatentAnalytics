@@ -73,7 +73,7 @@ class Classify(object):
         for classifier in classifiers.keys():
             clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
             clf.fit(feature_matrix, response)
-            print(classifier, clf.best_params_)
+            print(classifier, clf.best_params_, clf.best_score_)
             if clf.best_score_ > best_score:
                 self.classifier = clf.best_estimator_
 

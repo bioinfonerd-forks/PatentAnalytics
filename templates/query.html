@@ -1,20 +1,24 @@
 <!doctype html>
 <title>Money Project</title>
 <head>
-    <link href="{{ url_for('static', filename='css/style.scss.css') }}"
-      rel="stylesheet" type="text/css">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="container">
 <h1>
     Welcome to the Patent Project Classification System
 </h1>
 
- <form action="/query" method="POST">
-     <p><textarea type=text name=title placeholder="Title"></textarea></p>
-     <p><textarea type=text name=abstract placeholder="Abstract"></textarea></p>
-     <p><textarea type=text name=claims placeholder="Claims"></textarea></p>
-    <p><input type=submit value=Submit /></p>
-</form>
+    <div class="container2">
+         <form action="/query" method="POST">
+             <p><textarea rows="4" cols="50" type=text name=title placeholder="Title"></textarea></p>
+             <p><textarea rows="4" cols="50" type=text name=abstract placeholder="Abstract"></textarea></p>
+             <p><textarea rows="4" cols="50" type=text name=claims placeholder="Claims"></textarea></p>
+             <div class="form-button">
+                <input type=submit value=Submit class="graphite-flat-button"/>
+             </div>
+        </form>
+    </div>
 
 {% if title %}
 <p>Title: {{ title }}</p>
@@ -35,5 +39,6 @@
 <p><font color="red">{{ error }}</font></p>
 {% endif %}
 
+</div>
 
 </body>
