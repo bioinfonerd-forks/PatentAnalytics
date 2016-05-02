@@ -61,23 +61,17 @@ class Classify(object):
 
         :return:
         """
-        classifiers = [
-            KNeighborsClassifier(),
-            MultinomialNB(),
-            SGDClassifier()
-        ]
-
-        parameters = [
-            {'n_neighbors': [1, 2, 3, 4, 5]},
-            {'alpha': [0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 1]},
-            {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
-             'n_iter': [1, 2, 5, 8, 10]}
-        ]
+        classifiers = {
+            'knn':[KNeighborsClassifier(), {'n_neighbors': [1, 2, 3, 4, 5]}],
+            'bayes':[MultinomialNB(),{'alpha': [0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 1]}]
+            'sgd':[SGDClassifier(), {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
+             'n_iter': [1, 2, 5, 8, 10]}]
+        }
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
-        for i, classifier in enumerate(classifiers):
-            clf = GridSearchCV(classifier, parameters[i], cv=cross_val)
+        for classifier in classifiers.keys():
+            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
             clf.fit(feature_matrix, response)
             print(classifier, clf.best_params_)
             if clf.best_score_ > best_score:
