@@ -13,7 +13,7 @@ import numpy as np
 import dill as pickle
 import os
 from results import Results
-
+from sklearn.learning_curve import learning_curve
 
 class Classify(object):
     def __init__(self, config):
@@ -105,17 +105,9 @@ class Classify(object):
         :param response:
         :return:
         """
-
-        response = np.asarray(response)
-        cross_val = KFold(len(response), n_folds=16, shuffle=True)
-        score = []
-        for train_index, test_index in cross_val:
-            X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
-            y_train, y_test = response[train_index], response[test_index]
-
-            self.train(X_train, y_train)
-            score = np.append(self.classifier.score(X_test, y_test), score)
-        print('Classifier Mean Cross Val Score:', np.mean(score))
+        train_sizes, train_scores, valid_scores = learning_curve(self.classifier, feature_matrix, response,
+                                                                 train_sizes=np.arange(20000, 130000, 10000), cv=10)
+        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
 
     def save_classifier(self, column_name):
         """

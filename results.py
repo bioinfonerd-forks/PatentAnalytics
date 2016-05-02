@@ -11,3 +11,8 @@ class Results(object):
             parms = [x.parameters['alpha'] for x in classifier_grid_scores[classifier]]
             scores = [x.mean_validation_score for x in classifier_grid_scores[classifier]]
             plt.plot(parms, scores, '.', label=classifier)
+
+    @staticmethod
+    def plot_learning_curve(train_sizes, train_scores, valid_scores):
+        plt.plot(train_sizes, train_scores, label='Train Score')
+        plt.plot(train_sizes, train_scores, label='CV Score')
