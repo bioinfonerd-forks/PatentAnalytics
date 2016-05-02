@@ -54,25 +54,28 @@ class Classify(object):
         selected_feature_matrix = SelectKBest(chi2, k=int(0.9*feature_matrix.shape[1])).fit_transform(selected_feature_matrix, response_vector)
         return selected_feature_matrix
 
-    def optimize_classifier(self, feature_matrix, response, classifier, parameter_grid):
+    def optimize_classifier(self, feature_matrix, response, classifier, parameter_grid, parameter_of_interest):
         """
 
         :param feature_matrix:
         :param response:
         :param classifier:
+        :param parameter_grid:
+        :param parameter_of_interest:
         :return:
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
         clf.fit(feature_matrix, response)
         self.classifier = clf.best_estimator_
+        self.evaluate_classifier(feature_matrix, response, self.classifier)
+        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest)
 
     def classifier_selection(self, feature_matrix, response):
         """
         Select the classifier with the lowest error
         :return:
         """
-
         best_score = 0
         for classifier in self.classifiers.keys():
             clf = self.classifiers[classifier][0]

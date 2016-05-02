@@ -39,7 +39,8 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.classifier_selection(feature_matrix, response_vector)
-        # self.classify.evaluate_classifiers(feature_matrix, response_vector)
+        self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
+                                          self.classify.classifiers['sgd'][1])
 
     def full_train(self, feature_matrix, response_vector, column_name):
         """
@@ -51,7 +52,6 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.train(feature_matrix, response_vector)
-        self.classify.evaluate_classifiers(feature_matrix, response_vector)
         self.classify.save_classifier(column_name)
 
     def predict(self, entry, column_name):
@@ -77,4 +77,5 @@ if __name__ == '__main__':
         print(column_name)
         feature_matrix, response_vector = f.analyze_column_data(file, column_name)
         f.evaluate_performance(feature_matrix, response_vector)
+        f.full_train(feature_matrix, response_vector)
         # f.compute_heuristics(file, column_name)
