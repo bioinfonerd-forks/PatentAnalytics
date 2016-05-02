@@ -110,7 +110,7 @@ class Classify(object):
         train_sizes = np.arange(20000, 130000, 10000)
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         for classifier in self.classifiers:
-            clf = self.classifiers[classifier]
+            clf = self.classifiers[classifier][0]
             train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
                                                                                              train_sizes=train_sizes, cv=cross_val)
 
