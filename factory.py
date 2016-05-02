@@ -69,7 +69,7 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    file = '2015_2016_Patent_Data.csv'
+    file = '2015_2016_Patent_Data_new.csv'
 
     for column_name in ['title', 'abstract', 'claims']:
         feature_matrix, response_vector = f.analyze_column_data(file, column_name)
