@@ -1,6 +1,8 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.linear_model import Perceptron
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
@@ -63,10 +65,12 @@ class Classify(object):
         """
         classifiers = {
             # 'knn':[KNeighborsClassifier(), {'n_neighbors': [1, 2, 3, 4, 5]}],
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.00001, 0.05, 0.00001)}],
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 1, 0.001)}],
             'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0002, 0.00001),
                                       'l1_ratio': np.arange(0.5, 1, 0.001),
-                                      'n_iter': [8], 'penalty': ['l2', 'elasticnet']}]
+                                      'n_iter': [8], 'penalty': ['l2', 'elasticnet']}],
+            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
         }
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
