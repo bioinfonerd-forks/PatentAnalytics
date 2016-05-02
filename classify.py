@@ -51,9 +51,9 @@ class Classify(object):
         :return:
         """
         classifiers = {
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 1, 0.001)}],
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 0.2, 0.001)}],
             'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0001, 0.00001),
-                                      'l1_ratio': np.arange(0.5, 1, 0.1),
+                                      'l1_ratio': np.arange(0.5, 0.9, 0.1),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
             'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
@@ -62,15 +62,16 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
         results = dict()
-        for classifier in classifiers.keys():
-            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
-            clf.fit(feature_matrix, response)
-            if clf.best_score_ > best_score:
-                self.classifier = clf.best_estimator_
+        # for classifier in classifiers.keys():
+        classifier = 'bayes'
+        clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
+        clf.fit(feature_matrix, response)
+        if clf.best_score_ > best_score:
+            self.classifier = clf.best_estimator_
 
-            # Output results
-            print(classifier, clf.best_params_, clf.best_score_)
-            results['classifier'] = clf.grid_scores_
+        # Output results
+        print(classifier, clf.best_params_, clf.best_score_)
+        results['classifier'] = clf.grid_scores_
 
         # Grid results to results class
         self.results.plot_clasifier_comparison(results)
