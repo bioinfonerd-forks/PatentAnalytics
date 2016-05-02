@@ -38,9 +38,9 @@ class Factory(object):
         :return:
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        self.classify.classifier_selection(feature_matrix, response_vector)
+        # self.classify.classifier_selection(feature_matrix, response_vector)
         self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
-                                          self.classify.classifiers['sgd'][1])
+                                          self.classify.classifiers['SGD'][1], 'alpha')
 
     def full_train(self, feature_matrix, response_vector, column_name):
         """
