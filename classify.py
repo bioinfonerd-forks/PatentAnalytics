@@ -1,6 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import KFold
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import SelectKBest
@@ -59,22 +60,25 @@ class Classify(object):
         :return:
         """
         classifiers = [
-            # KNeighborsClassifier(n_neighbors=2),
-            MultinomialNB(alpha=0.01),
+            KNeighborsClassifier(),
+            MultinomialNB(),
             SGDClassifier()
         ]
 
         parameters = [
+            {'n_neighbors': [1, 2, 3, 4, 5]},
             {'alpha': [0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 1]},
             {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
-             'n_iter': [1,2, 5, 8, 10]}
+             'n_iter': [1, 2, 5, 8, 10]}
         ]
+
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+
         for i, classifier in enumerate(classifiers):
-            clf = GridSearchCV(classifier, parameters[i])
+            clf = GridSearchCV(classifier, parameters[i], cv=cross_val)
             clf.fit(feature_matrix, response)
             print(clf.best_params_)
             self.classifier = clf.best_estimator_
-            self.evaluate(feature_matrix, response)
 
     def predict(self, test_matrix):
         """
