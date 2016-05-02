@@ -71,7 +71,7 @@ if __name__ == '__main__':
     f = Factory(config_info)
     file = '2015_2016_Patent_Data_new.csv'
 
-    for column_name in ['title', 'abstract', 'claims']:
+    for column_name in ['abstract', 'claims']:
         print(column_name)
         feature_matrix, response_vector = f.analyze_column_data(file, column_name)
         f.evaluate_performance(feature_matrix, response_vector)

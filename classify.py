@@ -63,9 +63,10 @@ class Classify(object):
         """
         classifiers = {
             # 'knn':[KNeighborsClassifier(), {'n_neighbors': [1, 2, 3, 4, 5]}],
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 0.05, 0.001)}],
-            'sgd': [SGDClassifier(), {'alpha': np.arange(0.001, 0.05, 0.001),
-                                      'n_iter': [1, 2, 5, 8, 10]}]
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.00001, 0.05, 0.001)}],
+            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0002, 0.001),
+                                      'l1_ratio': np.arange(0.5, 1, 0.001),
+                                      'n_iter': [8]}]
         }
 
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
