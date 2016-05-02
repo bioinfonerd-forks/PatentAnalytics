@@ -5,6 +5,8 @@ class Config(object):
     def __init__(self):
         self.base_dir = os.path.dirname(os.path.realpath(__file__))
         self.data_dir = os.path.join(self.base_dir, 'data')
+        self.results_dir = os.path.join(self.base_dir, 'results')
+        self.classifier_dir = os.path.join(self.base_dir, 'classifiers')
         self.model_name = '_feature_model.dill'
         self.matrix_name = '_feature_matrix.dill'
         self.art_units = (
@@ -18,3 +20,6 @@ class Config(object):
 
     def get_matrix_path(self, feature_name):
         return os.path.join(self.data_dir, feature_name + self.matrix_name)
+
+    def get_classifier_path(self, clf_name):
+        return open(os.path.join(self.classifier_dir, clf_name + '_classifier.dill'))

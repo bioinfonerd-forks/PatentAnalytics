@@ -20,6 +20,7 @@ class Classify(object):
     def __init__(self, config):
         self.config = config
         self.classifier = None
+        self.clf_name = None
         self.results = Results(config)
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
@@ -81,6 +82,7 @@ class Classify(object):
             clf = self.classifiers[clf_name][0]
             score = self.evaluate_classifier(feature_matrix, response, clf)
             if score > best_score:
+                self.clf_name = clf_name
                 self.classifier = clf
 
     def evaluate_classifier(self, feature_matrix, response, classifier):
@@ -127,11 +129,13 @@ class Classify(object):
         :return:
         """
         # SAVE MODEL
-        pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'wb'))
+        path = self.config.get_classifier_path(column_name)
+        pickle.dump(self.classifier, open(path, 'wb'))
 
     def load_classifier(self, column_name):
         """
         :param column_name:
         :return:
         """
-        self.classifier = pickle.load(open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'rb'))
+        path = self.config.get_classifier_path(column_name)
+        self.classifier = pickle.load(open(path, 'rb'))
