@@ -45,6 +45,36 @@ class Classify(object):
         selected_feature_matrix = SelectKBest(chi2, k=int(0.9*feature_matrix.shape[1])).fit_transform(selected_feature_matrix, response_vector)
         return selected_feature_matrix
 
+    def classifier_selection(self, feature_matrix, response):
+        """
+
+        :return:
+        """
+        classifiers = {
+            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 1, 0.001)}],
+            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0001, 0.00001),
+                                      'l1_ratio': np.arange(0.5, 1, 0.1),
+                                      'n_iter': [8], 'penalty': ['elasticnet']}],
+            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
+        }
+
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        best_score = 0
+        results = dict()
+        for classifier in classifiers.keys():
+            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
+            clf.fit(feature_matrix, response)
+            if clf.best_score_ > best_score:
+                self.classifier = clf.best_estimator_
+
+            # Output results
+            print(classifier, clf.best_params_, clf.best_score_)
+            results['classifier'] = clf.grid_scores_
+
+        # Grid results to results class
+        self.results.plot_clasifier_comparison(results)
+
     def train(self, feature_matrix, response_vector):
         """
         Train the model with the feature vector and response vector
@@ -57,30 +87,6 @@ class Classify(object):
         self.classifier.fit(feature_matrix, response_vector)
 
         # TODO Get classifier error
-
-    def classifier_selection(self, feature_matrix, response):
-        """
-
-        :return:
-        """
-        classifiers = {
-            # 'knn':[KNeighborsClassifier(), {'n_neighbors': [1, 2, 3, 4, 5]}],
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.001, 1, 0.001)}],
-            'sgd': [SGDClassifier(), {'alpha': np.arange(0.00001, 0.0002, 0.00001),
-                                      'l1_ratio': np.arange(0.5, 1, 0.001),
-                                      'n_iter': [8], 'penalty': ['l2', 'elasticnet']}],
-            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
-            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
-        }
-
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        best_score = 0
-        for classifier in classifiers.keys():
-            clf = GridSearchCV(classifiers[classifier][0], classifiers[classifier][1], cv=cross_val)
-            clf.fit(feature_matrix, response)
-            print(classifier, clf.best_params_, clf.best_score_)
-            if clf.best_score_ > best_score:
-                self.classifier = clf.best_estimator_
 
     def predict(self, test_matrix):
         """
