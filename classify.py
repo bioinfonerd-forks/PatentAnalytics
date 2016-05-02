@@ -22,12 +22,12 @@ class Classify(object):
         self.classifier = None
         self.results = Results(config)
         self.classifiers = {
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'sgd': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
+            'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
+            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
                                       'l1_ratio': np.arange(0.1, 0.9, 0.1),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
-            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
-            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
+            'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
         }
 
     @staticmethod
@@ -135,3 +135,11 @@ class Classify(object):
         :return:
         """
         self.classifier = pickle.load(open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'rb'))
+
+
+class Classifier(object):
+    def __init__(self, config, name, estimator, param_grid):
+        self.config = config
+        self.name = name
+        self.estimator = estimator
+        self.param_grid = param_grid
