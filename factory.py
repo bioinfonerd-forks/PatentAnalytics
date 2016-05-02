@@ -77,5 +77,5 @@ if __name__ == '__main__':
         print(column_name)
         feature_matrix, response_vector = f.analyze_column_data(file, column_name)
         f.evaluate_performance(feature_matrix, response_vector)
-        f.full_train(feature_matrix, response_vector)
+        f.full_train(feature_matrix, response_vector, column_name)
         # f.compute_heuristics(file, column_name)

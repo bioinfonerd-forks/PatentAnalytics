@@ -65,7 +65,7 @@ class Analyzer(object):
             ngram_range=(1, n_grams),
             stop_words='english',
             lowercase=True,
-            strip_accents='unicode',
+            strip_accents='ascii',
             decode_error='replace',
             tokenizer=Analyzer.tokenize,
             norm='l2',
