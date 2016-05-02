@@ -64,7 +64,7 @@ class Classify(object):
         best_score = 0
         clf_results = dict()
         for classifier in self.classifiers.keys():
-            clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val)
+            clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val, n_jobs=4)
             clf.fit(feature_matrix, response)
             if clf.best_score_ > best_score:
                 self.classifier = clf.best_estimator_
@@ -112,7 +112,9 @@ class Classify(object):
         for classifier in self.classifiers:
             clf = self.classifiers[classifier][0]
             train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
-                                                                                             train_sizes=train_sizes, cv=cross_val)
+                                                                                             train_sizes=train_sizes, cv=cross_val,
+                                                                                             n_jobs=4)
+            pass
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
 

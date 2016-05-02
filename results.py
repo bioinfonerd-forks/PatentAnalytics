@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Results(object):
@@ -15,7 +16,7 @@ class Results(object):
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores):
         for classifier in train_scores.keys():
-            plt.plot(train_sizes, train_scores[classifier], '.-', label=classifier + 'Train Score')
-            plt.plot(train_sizes, valid_scores[classifier],  '.-', label=classifier + 'CV Score')
+            plt.plot(train_sizes, np.mean(train_scores[classifier], axis=1), '.-', label=classifier + ' Train Score')
+            plt.plot(train_sizes, np.mean(valid_scores[classifier], axis=1),  '.-', label=classifier + ' CV Score')
         plt.legend()
         plt.show()
