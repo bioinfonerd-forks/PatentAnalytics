@@ -33,6 +33,10 @@ class Analyzer(object):
         :param column_name: Name list abstract or title or claims
         :return:
         """
+        # Clean data, get rid of entries with less than 100 characters
+        criterion = self.data_frame[column_name].map(lambda x: len(str(x)) > 100)
+        self.data_frame = self.data_frame[criterion]
+
         self.data = self.data_frame[column_name].tolist()
 
         # Assign art unit to class
@@ -65,7 +69,7 @@ class Analyzer(object):
             ngram_range=(1, n_grams),
             stop_words='english',
             lowercase=True,
-            strip_accents='unicode',
+            strip_accents='ascii',
             decode_error='replace',
             tokenizer=Analyzer.tokenize,
             norm='l2',
