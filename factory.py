@@ -38,7 +38,8 @@ class Factory(object):
         :return:
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        self.classify.compare_classifiers(feature_matrix, response_vector)
+        self.classify.classifier_selection(feature_matrix, response_vector)
+        # self.classify.evaluate_classifiers(feature_matrix, response_vector)
 
     def full_train(self, feature_matrix, response_vector, column_name):
         """
@@ -50,6 +51,7 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.train(feature_matrix, response_vector)
+        self.classify.evaluate_classifiers(feature_matrix, response_vector)
         self.classify.save_classifier(column_name)
 
     def predict(self, entry, column_name):
@@ -71,7 +73,8 @@ if __name__ == '__main__':
     f = Factory(config_info)
     file = '2015_2016_Patent_Data_new.csv'
 
-    for column_name in ['title', 'abstract', 'claims']:
+    for column_name in ['abstract', 'claims']:
+        print(column_name)
         feature_matrix, response_vector = f.analyze_column_data(file, column_name)
         f.evaluate_performance(feature_matrix, response_vector)
         # f.compute_heuristics(file, column_name)
