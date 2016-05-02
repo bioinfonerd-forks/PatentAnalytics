@@ -65,9 +65,9 @@ class Classify(object):
         ]
 
         parameters = [
-            {'alpha': [0.001, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1]},
+            {'alpha': [0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 1]},
             {'alpha': [0.001, 0.005, 0.01, 0.05, 0.1],
-             'n_iter': [1, 5, 100, 500, 1000, 5000]}
+             'n_iter': [1, 5, 100, 500, 1000]}
         ]
         for i, classifier in enumerate(classifiers):
             clf = GridSearchCV(classifier, parameters[i])
@@ -94,7 +94,7 @@ class Classify(object):
         """
 
         response = np.asarray(response)
-        cross_val = KFold(len(response), n_folds=32, shuffle=True)
+        cross_val = KFold(len(response), n_folds=16, shuffle=True)
         score = []
         for train_index, test_index in cross_val:
             X_train, X_test = feature_matrix[train_index], feature_matrix[test_index]
