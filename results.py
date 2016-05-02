@@ -17,7 +17,7 @@ class Results(object):
         scores = [x.mean_validation_score for x in classifier_grid_scores]
         plt.plot(parms, scores, '.')
 
-    def plot_learning_curve(self, train_sizes, train_scores, valid_scores):
+    def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):
         """
         Plot the results from the learning curves of a single classifier
         :param train_sizes:
@@ -28,4 +28,5 @@ class Results(object):
         plt.plot(train_sizes, np.mean(train_scores, axis=1), '.-', label='Train Score')
         plt.plot(train_sizes, np.mean(valid_scores, axis=1),  '.-', label='CV Score')
         plt.legend()
+        plt.title(classifier.__class__)
         plt.show()

@@ -11,7 +11,6 @@ from sklearn.feature_selection import chi2
 from sklearn.grid_search import GridSearchCV
 import numpy as np
 import dill as pickle
-import os
 from results import Results
 from sklearn.learning_curve import learning_curve
 
@@ -20,14 +19,15 @@ class Classify(object):
     def __init__(self, config):
         self.config = config
         self.classifier = None
+        self.clf_name = None
         self.results = Results(config)
         self.classifiers = {
-            'bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'sgd': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
+            'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
+            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
                                       'l1_ratio': np.arange(0.1, 0.9, 0.1),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
-            'passive_aggresive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
-            'perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
+            'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
         }
 
     @staticmethod
@@ -77,10 +77,11 @@ class Classify(object):
         :return:
         """
         best_score = 0
-        for classifier in self.classifiers.keys():
-            clf = self.classifiers[classifier][0]
+        for clf_name in self.classifiers.keys():
+            clf = self.classifiers[clf_name][0]
             score = self.evaluate_classifier(feature_matrix, response, clf)
             if score > best_score:
+                self.clf_name = clf_name
                 self.classifier = clf
 
     def evaluate_classifier(self, feature_matrix, response, classifier):
@@ -96,8 +97,8 @@ class Classify(object):
                                                                  train_sizes=train_sizes, cv=cross_val,
                                                                  n_jobs=4)
 
-        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores)
-        return np.mean(valid_scores[:-1], axis=0)
+        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
+        return np.mean(valid_scores[:-1])
 
     def train(self, feature_matrix, response_vector):
         """
@@ -127,11 +128,13 @@ class Classify(object):
         :return:
         """
         # SAVE MODEL
-        pickle.dump(self.classifier, open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'wb'))
+        path = self.config.get_classifier_path(column_name)
+        pickle.dump(self.classifier, open(path, 'wb'))
 
     def load_classifier(self, column_name):
         """
         :param column_name:
         :return:
         """
-        self.classifier = pickle.load(open(os.path.join(self.config.data_dir, column_name + '_classifier.dill'), 'rb'))
+        path = self.config.get_classifier_path(column_name)
+        self.classifier = pickle.load(open(path, 'rb'))
