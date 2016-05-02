@@ -63,11 +63,11 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         best_score = 0
         clf_results = dict()
-        best_estimators = []
+        best_estimators = dict()
         for classifier in self.classifiers.keys():
             clf = GridSearchCV(self.classifiers[classifier][0], self.classifiers[classifier][1], cv=cross_val, n_jobs=4)
             clf.fit(feature_matrix, response)
-            best_estimators.append(clf)
+            best_estimators[classifier] = clf
             if clf.best_score_ > best_score:
                 self.classifier = clf.best_estimator_
 
@@ -118,7 +118,11 @@ class Classify(object):
             clfs = self.classifiers
 
         for classifier in clfs:
-            clf = self.classifiers[classifier][0]
+            if type(clf[classifier]) == 'list':
+                clf = clfs[classifier][0]
+            else:
+                clf = clfs[classifier]
+
             train_sizes, train_scores[classifier], valid_scores[classifier] = learning_curve(clf, feature_matrix, response,
                                                                                              train_sizes=train_sizes, cv=cross_val,
                                                                                              n_jobs=4)
