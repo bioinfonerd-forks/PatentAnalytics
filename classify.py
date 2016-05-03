@@ -63,7 +63,7 @@ class Classify(object):
         :return:
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
+        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=2)
         clf.fit(feature_matrix, response)
         self.classifier = clf.best_estimator_
         self.evaluate_classifier(feature_matrix, response, self.classifier)
@@ -93,7 +93,7 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,
-                                                                 n_jobs=4)
+                                                                 n_jobs=2)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
         return np.mean(valid_scores[:-1])
