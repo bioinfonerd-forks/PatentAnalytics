@@ -122,7 +122,7 @@ class Classify(object):
         scores = cross_validation.cross_val_score(self.classifier, self.feature_matrix, self.response, cv=cross_val)
         return np.mean(scores)
 
-    def train(self, feature_matrix, response_vector):
+    def train(self):
         """
         Train the model with the feature vector and response vector
         :param feature_matrix: blh
@@ -131,7 +131,7 @@ class Classify(object):
         """
 
         # Make sure the number of examples is greater than number of predictors
-        self.classifier.fit(feature_matrix, response_vector)
+        self.classifier.fit(self.feature_matrix, self.response)
 
     def predict(self, test_matrix):
         """

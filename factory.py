@@ -41,6 +41,7 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
+        self.classify.train()
         predicted_response = self.classify.predict(feature_matrix)
         print(confusion_matrix(response_vector, predicted_response))
 
@@ -54,7 +55,7 @@ class Factory(object):
         self.classify.feature_selection()
         self.classify.optimize_classifier('SGD')
         predicted_response = self.classify.predict(feature_matrix)
-        confusion_matrix(response_vector, predicted_response)
+        print(confusion_matrix(response_vector, predicted_response))
 
     def full_train(self, feature_matrix, response_vector):
         """
@@ -119,6 +120,6 @@ if __name__ == '__main__':
 
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
-    f.evaluate_performance(feature_matrix, response_vector)
+    f.optimize(feature_matrix, response_vector)
     # f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

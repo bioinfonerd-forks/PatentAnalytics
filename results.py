@@ -13,11 +13,12 @@ class Results(object):
         :param parameter:
         :return:
         """
-        parms = [x.parameters[parameter] for x in classifier_grid_scores]
-        scores = [x.mean_validation_score for x in classifier_grid_scores]
-        plt.plot(parms, scores, '.')
-        plt.title(clf_name)
-        plt.show()
+        for param in classifier_grid_scores[0].parameters:
+            parm_vec = [x.parameters[param] for x in classifier_grid_scores]
+            scores = [x.mean_validation_score for x in classifier_grid_scores]
+            plt.plot(parm_vec, scores, '.')
+            plt.title(clf_name)
+            plt.show()
 
     def plot_learning_curves(self, train_sizes, valid_scores, classifiers):
         """
