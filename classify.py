@@ -69,7 +69,7 @@ class Classify(object):
         clf.fit(feature_matrix, response)
         self.classifier = clf.best_estimator_
         self.evaluate_classifier(feature_matrix, response, self.classifier)
-        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest)
+        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, self.clf_name)
 
     def classifier_selection(self, feature_matrix, response):
         """
@@ -91,7 +91,7 @@ class Classify(object):
         :param response:
         :return:
         """
-        train_sizes = np.arange(10000, len(response), 10000)
+        train_sizes = np.arange(10000, len(response) - 30000, 10000)
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,

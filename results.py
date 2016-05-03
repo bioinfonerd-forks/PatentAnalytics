@@ -1,21 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 class Results(object):
     def __init__(self, config):
         self.config = config
 
-    def plot_classifier_optimization(self, classifier_grid_scores, parameter):
+    def plot_classifier_optimization(self, classifier_grid_scores, parameter, clf_name):
         """
         Plot the results of the classifier optimization for a single classifier
         :param classifier_grid_scores:
         :param parameter:
         :return:
         """
+        fig = plt.figure()
         parms = [x.parameters[parameter] for x in classifier_grid_scores]
         scores = [x.mean_validation_score for x in classifier_grid_scores]
         plt.plot(parms, scores, '.')
+        fig.savefig(os.path.join(self.config.results_dir, clf_name + '.png'))
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):
         """
