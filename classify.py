@@ -49,9 +49,7 @@ class Classify(object):
         :param response_vector:
         :return:
         """
-        selector = VarianceThreshold()
-        selected_feature_matrix = selector.fit_transform(feature_matrix, response_vector)
-        selected_feature_matrix = SelectKBest(chi2, k=int(0.9*feature_matrix.shape[1])).fit_transform(selected_feature_matrix, response_vector)
+        selected_feature_matrix = SelectKBest(chi2, k=int(0.8*feature_matrix.shape[0])).fit_transform(feature_matrix, response_vector)
         return selected_feature_matrix
 
     def optimize_classifier(self, feature_matrix, response, classifier, parameter_grid, parameter_of_interest):
