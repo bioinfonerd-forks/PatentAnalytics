@@ -39,6 +39,7 @@ class Factory(object):
         :param response_vector:
         :return:
         """
+        self.classify.feature_selection()
         self.classify.classifier_selection()
         predicted_response = self.classify.predict(feature_matrix)
         print(confusion_matrix(response_vector, predicted_response))
@@ -50,11 +51,8 @@ class Factory(object):
         :param response_vector:
         :return:
         """
-        feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        print('Optimization Feature Selection')
-        classifier = self.classify.classifiers['SGD'][0]
-        parameters = self.classify.classifiers['SGD'][1]
-        self.classify.optimize_classifier(feature_matrix, response_vector, classifier, parameters, 'l1_ratio')
+        self.classify.feature_selection()
+        self.classify.optimize_classifier('SGD')
         predicted_response = self.classify.predict(feature_matrix)
         confusion_matrix(response_vector, predicted_response)
 

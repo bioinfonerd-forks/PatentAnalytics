@@ -47,18 +47,19 @@ class Classify(object):
         feature_matrix_reduced = pca.fit_transform(feature_matrix)
         return feature_matrix_reduced
 
-    @staticmethod
-    def feature_selection(feature_matrix, response_vector):
+    def feature_selection(self):
         """
         Remove zero variance features
         :param feature_matrix:
         :param response_vector:
         :return:
         """
+        feature_matrix = self.feature_matrix
+        response_vector = self.response
         selected_feature_matrix = SelectKBest(chi2, k=int(0.8*feature_matrix.shape[0])).fit_transform(feature_matrix, response_vector)
-        return selected_feature_matrix
+        self.feature_matrix = selected_feature_matrix
 
-    def optimize_classifier(self, classifier, parameter_grid, parameter_of_interest):
+    def optimize_classifier(self, clf_name):
         """
         Optimize a single classifier
         :param classifier:
@@ -67,11 +68,11 @@ class Classify(object):
         :return:
         """
         cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
-        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
+        clf = GridSearchCV(self.classifiers[clf_name][0], self.classifiers[clf_name][1], cv=cross_val, n_jobs=4)
         clf.fit(self.feature_matrix, self.response)
         print('Grid Search Completed', clf.best_estimator_, clf.best_score_)
         self.classifier = clf.best_estimator_
-        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, parameter_of_interest)
+        self.results.plot_classifier_optimization(clf_name, clf.grid_scores_)
         self.evaluate()
 
     def classifier_selection(self):
@@ -88,7 +89,7 @@ class Classify(object):
         for clf_name in clf_names:
             clf = self.classifiers[clf_name][0]
             train_sizes[clf_name], train_scores[clf_name], valid_scores[clf_name] = self.evaluate_learning_curve(clf)
-            score = np.mean(valid_scores[clf_name][:-1], axis=0)
+            score = np.mean(valid_scores[clf_name][:-1], axis=1)
             print(clf_name, score)
             if score > best_score:
                 self.clf_name = clf_name
