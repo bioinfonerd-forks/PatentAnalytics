@@ -91,7 +91,7 @@ class Classify(object):
         for clf_name in clf_names:
             clf = self.classifiers[clf_name][0]
             train_sizes[clf_name], train_scores[clf_name], valid_scores[clf_name] = self.evaluate_learning_curve(clf)
-            score = np.mean(valid_scores[:-1], axis=1)
+            score = np.mean(valid_scores[clf_name][:-1], axis=0)
             print(clf_name, score)
             if score > best_score:
                 self.clf_name = clf_name
