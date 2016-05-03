@@ -20,7 +20,7 @@ class Results(object):
         plt.title(clf_name)
         plt.show()
 
-    def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):
+    def plot_learning_curves(self, train_sizes, valid_scores, classifiers):
         """
         Plot the result from the learning curves of a single classifier
         :param train_sizes:
@@ -28,8 +28,9 @@ class Results(object):
         :param valid_scores:
         :return:
         """
-        plt.plot(train_sizes, np.mean(train_scores, axis=1), '.-', label='Train Score')
-        plt.plot(train_sizes, np.mean(valid_scores, axis=1),  '.-', label='CV Score')
+        for clf in classifiers:
+            plt.plot(train_sizes[clf], np.mean(valid_scores[clf], axis=1),  '.-', label=clf)
+
         plt.legend(loc='best')
-        plt.title(classifier.__class__)
+        plt.title('Classifier Learning Curve Comparison')
         plt.show()

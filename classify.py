@@ -83,13 +83,21 @@ class Classify(object):
         :return:
         """
         best_score = 0
-        for clf_name in self.classifiers.keys():
+        train_sizes = dict()
+        train_scores = dict()
+        valid_scores= dict()
+
+        clf_names = self.classifiers.keys()
+        for clf_name in clf_names:
             clf = self.classifiers[clf_name][0]
-            score = self.evaluate_learning_curve(clf)
+            train_sizes[clf_name], train_scores[clf_name], valid_scores[clf_name] = self.evaluate_learning_curve(clf)
+            score = np.mean(valid_scores[:-1], axis=1)
             print(clf_name, score)
             if score > best_score:
                 self.clf_name = clf_name
                 self.classifier = clf
+
+        self.results.plot_learning_curves(train_sizes, valid_scores, clf_names)
 
     def evaluate_learning_curve(self, classifier):
         """
@@ -104,8 +112,7 @@ class Classify(object):
                                                                  train_sizes=train_sizes, cv=cross_val,
                                                                  n_jobs=4)
 
-        self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
-        return np.mean(valid_scores[:-1])
+        return train_sizes, train_scores, valid_scores
 
     def evaluate(self):
         """
