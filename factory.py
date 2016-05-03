@@ -74,7 +74,7 @@ if __name__ == '__main__':
     f = Factory(config_info)
     file = '2015_2016_Patent_Data_new.csv'
 
-    # Get all the feature matrixes
+    # Get all the feature matrices
     title_matrix, response_vector = f.analyze_column_data(file, 'title')
     abstract_matrix, response_vector = f.analyze_column_data(file, 'abstract')
     claims_matrix, response_vector = f.analyze_column_data(file, 'claims')
