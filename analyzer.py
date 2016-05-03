@@ -31,7 +31,7 @@ class Analyzer(object):
         criterion = self.data_frame['abstract'].map(lambda x: len(str(x)) > 100)
         self.data_frame = self.data_frame[criterion]
 
-        criterion = self.data_frame['title'].map(lambda x: len(str(x)) > 100)
+        criterion = self.data_frame['title'].map(lambda x: len(str(x)) > 10)
         self.data_frame = self.data_frame[criterion]
 
         criterion = self.data_frame['claims'].map(lambda x: len(str(x)) > 100)
