@@ -57,7 +57,7 @@ class Factory(object):
         predicted_response = self.classify.predict(feature_matrix)
         print(confusion_matrix(response_vector, predicted_response))
 
-    def full_train(self, feature_matrix, response_vector):
+    def full_train(self,):
         """
         GET THE CLASSIFIER TRAINED
         :param feature_matrix:
@@ -65,8 +65,7 @@ class Factory(object):
         :param column_name:
         :return:
         """
-        feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        self.classify.train(feature_matrix, response_vector)
+        self.classify.train()
         self.classify.save_classifier()
 
     def evaluate(self, title, abstract, claims):
@@ -120,7 +119,9 @@ if __name__ == '__main__':
 
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
-    f.optimize(feature_matrix, response_vector)
-    f.classify.save_classifier()
+    f.full_train()
+    predicted_response = f.classify.predict(feature_matrix)
+    print(confusion_matrix(response_vector, predicted_response))
+    # f.optimize(feature_matrix, response_vector)
     # f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

@@ -18,7 +18,7 @@ from results import Results
 class Classify(object):
     def __init__(self, config, feature_matrix, response):
         self.config = config
-        self.classifier = SGDClassifier(alpha=1.8*10**-6, l1_ratio=0.2)
+        self.classifier = SGDClassifier(alpha=1.3e-5, l1_ratio=0.1)
         self.clf_name = None
         self.results = Results(config)
         self.feature_matrix = feature_matrix
