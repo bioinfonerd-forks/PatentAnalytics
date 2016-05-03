@@ -23,7 +23,7 @@ class Classify(object):
         self.results = Results(config)
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(14, 22, 1),
+            'SGD': [SGDClassifier(), {'alpha': [10**-6 * 1.8],
                                       'l1_ratio': np.arange(0.05, 0.3, 0.05),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
@@ -64,7 +64,7 @@ class Classify(object):
         :return:
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=1)
+        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
         self.clf_name = 'SGD'
         clf.fit(feature_matrix, response)
         print('Grid Search Completed', clf.best_estimator_, clf.best_score_)
@@ -97,10 +97,10 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,
-                                                                 n_jobs=1)
+                                                                 n_jobs=4)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
-        return np.mean(valid_scores[:-1]), np.mean(train_scores[:-1])
+        return np.mean(valid_scores[:-1])
 
     def evaluate(self, feature_matrix, response):
         """

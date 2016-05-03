@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class Results(object):
     def __init__(self, config):
         self.config = config

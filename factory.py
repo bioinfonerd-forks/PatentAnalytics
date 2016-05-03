@@ -55,7 +55,7 @@ class Factory(object):
         print('Optimization Feature Selection')
         classifier = self.classify.classifiers['SGD'][0]
         parameters = self.classify.classifiers['SGD'][1]
-        self.classify.optimize_classifier(feature_matrix, response_vector, classifier, parameters, 'alpha')
+        self.classify.optimize_classifier(feature_matrix, response_vector, classifier, parameters, 'l1_ratio')
         predicted_response = self.classify.predict(feature_matrix)
         confusion_matrix(response_vector, predicted_response)
 
