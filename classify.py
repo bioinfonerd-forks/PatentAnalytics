@@ -27,7 +27,7 @@ class Classify(object):
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
-            'Tree': [],
+            'Tree': [DecisionTreeClassifier(), {'criterion': ['gini']}],
         }
 
     @staticmethod

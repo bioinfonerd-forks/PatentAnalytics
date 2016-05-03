@@ -55,17 +55,30 @@ class Factory(object):
         self.classify.train(feature_matrix, response_vector)
         self.classify.save_classifier()
 
-    def predict(self, entry, column_name):
+    def evaluate(self, title, abstract, claims):
         """
         Predict group of a single entry
         :param abstract:
         :return:
         """
-        self.analyzer.load_model(column_name)
-        feature_vector = self.analyzer.transform(entry)
+        self.analyzer.load_model('title')
+        title_vector = self.analyzer.transform(title)
+        self.analyzer.load_model('abstract')
+        abstract_vector = self.analyzer.transform(abstract)
+        self.analyzer.load_model('claims')
+        claims_vector = self.analyzer.transform(claims)
 
-        self.classify.load_classifier(column_name)
+        feature_vector = hstack([title_vector, abstract_vector])
+        feature_vector = hstack([feature_vector, claims_vector])
+        return feature_vector
 
+    def predict(self, feature_vector):
+        """
+        Predict class based on feature vector input
+        :param feature_vector:
+        :return:
+        """
+        self.classify.load_classifier('clf_name')
         group = self.classify.predict(feature_vector)
         return group
 
