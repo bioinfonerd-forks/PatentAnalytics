@@ -18,6 +18,8 @@ class Results(object):
         parms = [x.parameters[parameter] for x in classifier_grid_scores]
         scores = [x.mean_validation_score for x in classifier_grid_scores]
         plt.plot(parms, scores, '.')
+        plt.title(clf_name)
+        plt.show()
         fig.savefig(os.path.join(self.config.results_dir, clf_name + '.png'))
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):

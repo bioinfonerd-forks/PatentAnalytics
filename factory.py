@@ -2,6 +2,7 @@ from config import Config
 from analyzer import Analyzer
 from classify import Classify
 from scipy.sparse import hstack
+from sklearn.metrics import confusion_matrix
 
 
 class Factory(object):
@@ -40,13 +41,15 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.classifier_selection(feature_matrix, response_vector)
-        # self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
-        #                                   self.classify.classifiers[self.classify.clf_name][1], 'alpha')
+        predicted_response = self.classify.predict(feature_matrix)
+        confusion_matrix(response_vector, predicted_response)
 
     def optimize(self, feature_matrix, response_vector):
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifiers['SGD'][0],
                                           self.classify.classifiers['SGD'][1], 'alpha')
+        predicted_response = self.classify.predict(feature_matrix)
+        confusion_matrix(response_vector, predicted_response)
 
     def full_train(self, feature_matrix, response_vector):
         """
