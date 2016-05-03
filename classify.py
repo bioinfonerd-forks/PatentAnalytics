@@ -3,16 +3,15 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.linear_model import Perceptron
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.cross_validation import KFold
-from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.grid_search import GridSearchCV
+from sklearn.learning_curve import learning_curve
 import numpy as np
 import dill as pickle
 from results import Results
-from sklearn.learning_curve import learning_curve
 
 
 class Classify(object):
@@ -27,7 +26,8 @@ class Classify(object):
                                       'l1_ratio': np.arange(0.1, 0.9, 0.1),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
-            'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}]
+            'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
+            'Tree': [],
         }
 
     @staticmethod
@@ -63,7 +63,7 @@ class Classify(object):
         :return:
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=2)
+        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
         clf.fit(feature_matrix, response)
         self.classifier = clf.best_estimator_
         self.evaluate_classifier(feature_matrix, response, self.classifier)
@@ -93,7 +93,7 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,
-                                                                 n_jobs=2)
+                                                                 n_jobs=4)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
         return np.mean(valid_scores[:-1])

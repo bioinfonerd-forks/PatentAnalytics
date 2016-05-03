@@ -40,8 +40,8 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.classifier_selection(feature_matrix, response_vector)
-        self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
-                                          self.classify.classifiers[self.classify.clf_name][1], 'alpha')
+        # self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
+        #                                   self.classify.classifiers[self.classify.clf_name][1], 'alpha')
 
     def full_train(self, feature_matrix, response_vector):
         """

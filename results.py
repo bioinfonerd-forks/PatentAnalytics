@@ -9,7 +9,7 @@ class Results(object):
 
     def plot_classifier_optimization(self, classifier_grid_scores, parameter, clf_name):
         """
-        Plot the results of the classifier optimization for a single classifier
+        Plot the result of the classifier optimization for a single classifier
         :param classifier_grid_scores:
         :param parameter:
         :return:
@@ -22,7 +22,7 @@ class Results(object):
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):
         """
-        Plot the results from the learning curves of a single classifier
+        Plot the result from the learning curves of a single classifier
         :param train_sizes:
         :param train_scores:
         :param valid_scores:
