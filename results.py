@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-
 
 class Results(object):
     def __init__(self, config):

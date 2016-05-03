@@ -23,8 +23,9 @@ class Classify(object):
         self.results = Results(config)
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 2),
-                                      'l1_ratio': np.arange(0.01, 0.25, 0.05),
+            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(2, 20, 2),
+                                      # 'l1_ratio': np.arange(0.01, 0.25, 0.05),
+                                      'l1_ratio': [.15],
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
@@ -64,10 +65,10 @@ class Classify(object):
         :return:
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
+        clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=1)
         self.clf_name = 'SGD'
-        print('Grid Search Completed')
         clf.fit(feature_matrix, response)
+        print('Grid Search Completed')
         self.classifier = clf.best_estimator_
         self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, parameter_of_interest)
         self.evaluate(feature_matrix, response)
@@ -97,7 +98,7 @@ class Classify(object):
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,
-                                                                 n_jobs=4)
+                                                                 n_jobs=1)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
         return np.mean(valid_scores[:-1]), np.mean(train_scores[:-1])
