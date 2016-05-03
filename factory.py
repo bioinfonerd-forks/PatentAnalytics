@@ -43,6 +43,11 @@ class Factory(object):
         # self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
         #                                   self.classify.classifiers[self.classify.clf_name][1], 'alpha')
 
+    def optimize(self, feature_matrix, response_vector):
+        feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
+        self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifiers['SGD'][0],
+                                          self.classify.classifiers['SGD'][1], 'alpha')
+
     def full_train(self, feature_matrix, response_vector):
         """
         GET THE CLASSIFIER TRAINED
@@ -96,6 +101,6 @@ if __name__ == '__main__':
     feature_matrix = hstack([title_matrix, abstract_matrix])
     feature_matrix = hstack([feature_matrix, claims_matrix])
 
-    f.evaluate_performance(feature_matrix, response_vector)
+    f.optimize(feature_matrix, response_vector)
     f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

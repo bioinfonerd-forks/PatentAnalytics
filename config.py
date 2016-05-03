@@ -24,4 +24,4 @@ class Config(object):
 
     def get_classifier_path(self, clf_name):
         today = date.today().isoformat()
-        return open(os.path.join(self.classifier_dir, clf_name + today + '.dill'))
+        return os.path.join(self.classifier_dir, clf_name + today + '.dill')
