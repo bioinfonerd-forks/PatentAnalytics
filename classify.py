@@ -26,15 +26,14 @@ class Classify(object):
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
 
-            'SGD': [SGDClassifier(), {'alpha':  10**-6*np.arange(1, 15, 2),
-                                      'l1_ratio': np.arange(0.05, 0.3, 0.05),
-                                      'n_iter': [8], 'penalty': ['elasticnet']}],
+            'SGD': [SGDClassifier(n_iter=8, penalty='elasticnet'), {'alpha':  10**-6*np.arange(1, 15, 2),
+                                                                    'l1_ratio': np.arange(0.05, 0.3, 0.05)}],
 
-            'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+            'Passive Aggressive': [PassiveAggressiveClassifier(loss='hinge'), {}],
 
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
 
-            'Tree': [DecisionTreeClassifier(), {'criterion': ['gini']}],
+            'Tree': [DecisionTreeClassifier(), {}],
         }
 
     @staticmethod
@@ -61,9 +60,7 @@ class Classify(object):
 
     def optimize_classifier(self, classifier, parameter_grid, parameter_of_interest):
         """
-
-        :param feature_matrix:
-        :param response:
+        Optimize a single classifier
         :param classifier:
         :param parameter_grid:
         :param parameter_of_interest:
@@ -79,7 +76,7 @@ class Classify(object):
 
     def classifier_selection(self):
         """
-        Select the classifier with the lowest error
+        Select the classifier with the lowest error, create a plot comparing classifiers
         :return:
         """
         best_score = 0
