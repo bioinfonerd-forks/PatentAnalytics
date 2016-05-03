@@ -39,7 +39,7 @@ class Factory(object):
         :param response_vector:
         :return:
         """
-        self.classify.classifier_selection(feature_matrix, response_vector)
+        self.classify.classifier_selection()
         predicted_response = self.classify.predict(feature_matrix)
         print(confusion_matrix(response_vector, predicted_response))
 
@@ -114,6 +114,7 @@ if __name__ == '__main__':
     file = '2015_2016_Patent_Data_new.csv'
 
     feature_matrix, response_vector = f.get_all_column_data(file)
+    f.classify = Classify(feature_matrix, response_vector)
     f.evaluate_performance(feature_matrix, response_vector)
     # f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)
