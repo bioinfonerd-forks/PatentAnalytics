@@ -27,7 +27,7 @@ class Classify(object):
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
 
             'SGD': [SGDClassifier(n_iter=8, penalty='elasticnet'), {'alpha':  10**-6*np.arange(1, 15, 2),
-                                                                    'l1_ratio': np.arange(0.05, 0.3, 0.05)}],
+                                                                    'l1_ratio': np.arange(0.1, 0.3, 0.05)}],
 
             'Passive Aggressive': [PassiveAggressiveClassifier(loss='hinge'), {}],
 
@@ -151,10 +151,10 @@ class Classify(object):
         path = self.config.get_classifier_path(self.clf_name)
         pickle.dump(self.classifier, open(path, 'wb'))
 
-    def load_classifier(self, column_name):
+    def load_classifier(self, clf_name):
         """
         :param column_name:
         :return:
         """
-        path = self.config.get_classifier_path(column_name)
+        path = self.config.get_classifier_path(clf_name)
         self.classifier = pickle.load(open(path, 'rb'))
