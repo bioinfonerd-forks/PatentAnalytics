@@ -6,14 +6,13 @@ class Results(object):
     def __init__(self, config):
         self.config = config
 
-    def plot_classifier_optimization(self, classifier_grid_scores, parameter, clf_name):
+    def plot_classifier_optimization(self, clf_name, classifier_grid_scores):
         """
         Plot the result of the classifier optimization for a single classifier
         :param classifier_grid_scores:
         :param parameter:
         :return:
         """
-        fig = plt.figure()
         parms = [x.parameters[parameter] for x in classifier_grid_scores]
         scores = [x.mean_validation_score for x in classifier_grid_scores]
         plt.plot(parms, scores, '.')

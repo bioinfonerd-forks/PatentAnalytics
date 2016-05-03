@@ -33,7 +33,7 @@ class Classify(object):
 
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
 
-            'Tree': [DecisionTreeClassifier(), {}],
+            # 'Tree': [DecisionTreeClassifier(), {}],
         }
 
     @staticmethod

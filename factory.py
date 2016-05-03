@@ -95,7 +95,13 @@ class Factory(object):
         group = self.classify.predict(feature_vector)
         return group
 
-    def get_all_column_data(self, file):
+    @staticmethod
+    def get_all_column_data(file):
+        """
+        Combine all column data into a single feature matrix
+        :param file:
+        :return:
+        """
         # Get all the feature matrices
         title_matrix, response_vector = f.analyze_column_data(file, 'title')
         abstract_matrix, response_vector = f.analyze_column_data(file, 'abstract')
