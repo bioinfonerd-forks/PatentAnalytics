@@ -12,8 +12,8 @@ class Config(object):
         self.matrix_name = '_feature_matrix.dill'
         self.art_units = (
             "36", "24", "21",
-            "16", "17", "26",
-            "28", "37"
+            # "16", "17", "26",
+            # "28", "37"
         )
 
     def get_model_path(self, feature_name):

@@ -45,9 +45,17 @@ class Factory(object):
         confusion_matrix(response_vector, predicted_response)
 
     def optimize(self, feature_matrix, response_vector):
+        """
+        Optimize classifier
+        :param feature_matrix:
+        :param response_vector:
+        :return:
+        """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
-        self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifiers['SGD'][0],
-                                          self.classify.classifiers['SGD'][1], 'alpha')
+        print('Optimization Feature Selection')
+        classifier = self.classify.classifiers['SGD'][0]
+        parameters = self.classify.classifiers['SGD'][1]
+        self.classify.optimize_classifier(feature_matrix, response_vector, classifier, parameters, 'alpha')
         predicted_response = self.classify.predict(feature_matrix)
         confusion_matrix(response_vector, predicted_response)
 
@@ -105,5 +113,6 @@ if __name__ == '__main__':
     feature_matrix = hstack([feature_matrix, claims_matrix])
 
     f.optimize(feature_matrix, response_vector)
+    f.evaluate_performance(feature_matrix, response_vector)
     f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

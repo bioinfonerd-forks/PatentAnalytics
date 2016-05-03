@@ -9,6 +9,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.grid_search import GridSearchCV
 from sklearn.learning_curve import learning_curve
+from sklearn import cross_validation
 import numpy as np
 import dill as pickle
 from results import Results
@@ -22,8 +23,8 @@ class Classify(object):
         self.results = Results(config)
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 1),
-                                      'l1_ratio': np.arange(0.1, 0.9, 0.1),
+            'SGD': [SGDClassifier(), {'alpha': 10**-7 * np.arange(1, 10, 2),
+                                      'l1_ratio': np.arange(0.01, 0.25, 0.05),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
@@ -64,10 +65,12 @@ class Classify(object):
         """
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
+        self.clf_name = 'SGD'
+        print('Grid Search Completed')
         clf.fit(feature_matrix, response)
         self.classifier = clf.best_estimator_
-        self.evaluate_classifier(feature_matrix, response, self.classifier)
-        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, self.clf_name)
+        self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, parameter_of_interest)
+        self.evaluate(feature_matrix, response)
 
     def classifier_selection(self, feature_matrix, response):
         """
@@ -77,26 +80,38 @@ class Classify(object):
         best_score = 0
         for clf_name in self.classifiers.keys():
             clf = self.classifiers[clf_name][0]
-            score = self.evaluate_classifier(feature_matrix, response, clf)
+            score = self.evaluate_learning_curve(feature_matrix, response, clf)
+            print(clf_name, score)
             if score > best_score:
                 self.clf_name = clf_name
                 self.classifier = clf
 
-    def evaluate_classifier(self, feature_matrix, response, classifier):
+    def evaluate_learning_curve(self, feature_matrix, response, classifier):
         """
         Evaluate the classifier input with learning curve and cross validation
         :param feature_matrix:
         :param response:
         :return:
         """
-        train_sizes = np.arange(10000, len(response) - 30000, 10000)
+        train_sizes = np.arange(100, int(0.9*len(response)), 5000)
         cross_val = KFold(len(response), n_folds=10, shuffle=True)
         train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
                                                                  train_sizes=train_sizes, cv=cross_val,
                                                                  n_jobs=4)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
-        return np.mean(valid_scores[:-1])
+        return np.mean(valid_scores[:-1]), np.mean(train_scores[:-1])
+
+    def evaluate(self, feature_matrix, response):
+        """
+
+        :param feature_matrix:
+        :param response:
+        :return:
+        """
+        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        scores = cross_validation.cross_val_score(self.classifier, feature_matrix, response, cv=cross_val)
+        return np.mean(scores)
 
     def train(self, feature_matrix, response_vector):
         """
@@ -108,8 +123,6 @@ class Classify(object):
 
         # Make sure the number of examples is greater than number of predictors
         self.classifier.fit(feature_matrix, response_vector)
-
-        # TODO Get classifier error
 
     def predict(self, test_matrix):
         """

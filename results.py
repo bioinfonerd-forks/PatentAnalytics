@@ -20,7 +20,6 @@ class Results(object):
         plt.plot(parms, scores, '.')
         plt.title(clf_name)
         plt.show()
-        fig.savefig(os.path.join(self.config.results_dir, clf_name + '.png'))
 
     def plot_learning_curve(self, train_sizes, train_scores, valid_scores, classifier):
         """
@@ -32,6 +31,6 @@ class Results(object):
         """
         plt.plot(train_sizes, np.mean(train_scores, axis=1), '.-', label='Train Score')
         plt.plot(train_sizes, np.mean(valid_scores, axis=1),  '.-', label='CV Score')
-        plt.legend()
+        plt.legend(loc='best')
         plt.title(classifier.__class__)
         plt.show()
