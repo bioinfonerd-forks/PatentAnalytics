@@ -9,7 +9,7 @@ class Factory(object):
     def __init__(self, config):
         self.config = config
         self.analyzer = Analyzer(self.config)
-        self.classify = Classify(self.config)
+        self.classify = None
 
     def analyze_column_data(self, filename, column_name):
         """
@@ -39,7 +39,6 @@ class Factory(object):
         :param response_vector:
         :return:
         """
-        feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.classifier_selection(feature_matrix, response_vector)
         predicted_response = self.classify.predict(feature_matrix)
         confusion_matrix(response_vector, predicted_response)
@@ -98,21 +97,23 @@ class Factory(object):
         group = self.classify.predict(feature_vector)
         return group
 
+    def get_all_column_data(self, file):
+        # Get all the feature matrices
+        title_matrix, response_vector = f.analyze_column_data(file, 'title')
+        abstract_matrix, response_vector = f.analyze_column_data(file, 'abstract')
+        claims_matrix, response_vector = f.analyze_column_data(file, 'claims')
+
+        # Get them all together
+        feature_matrix = hstack([title_matrix, abstract_matrix])
+        feature_matrix = hstack([feature_matrix, claims_matrix])
+        return feature_matrix, response_vector
+
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
     file = '2015_2016_Patent_Data_new.csv'
 
-    # Get all the feature matrices
-    title_matrix, response_vector = f.analyze_column_data(file, 'title')
-    abstract_matrix, response_vector = f.analyze_column_data(file, 'abstract')
-    claims_matrix, response_vector = f.analyze_column_data(file, 'claims')
+    feature_matrix, response_vector = f.get_all_column_data(file)
 
-    # Get them all together
-    feature_matrix = hstack([title_matrix, abstract_matrix])
-    feature_matrix = hstack([feature_matrix, claims_matrix])
-
-    f.optimize(feature_matrix, response_vector)
-    f.evaluate_performance(feature_matrix, response_vector)
     f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

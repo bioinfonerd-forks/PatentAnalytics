@@ -16,18 +16,24 @@ from results import Results
 
 
 class Classify(object):
-    def __init__(self, config):
+    def __init__(self, config, feature_matrix, response):
         self.config = config
-        self.classifier = None
+        self.classifier = SGDClassifier(alpha=1.8*10**-6, l1_ratio=0.2)
         self.clf_name = None
         self.results = Results(config)
+        self.feature_matrix = feature_matrix
+        self.response = response
         self.classifiers = {
             'Bayes': [MultinomialNB(), {'alpha': np.arange(0.0001, 0.2, 0.0001)}],
-            'SGD': [SGDClassifier(), {'alpha': [10**-6 * 1.8],
+
+            'SGD': [SGDClassifier(), {'alpha':  10**-6*np.arange(1, 15, 2),
                                       'l1_ratio': np.arange(0.05, 0.3, 0.05),
                                       'n_iter': [8], 'penalty': ['elasticnet']}],
+
             'Passive Aggressive': [PassiveAggressiveClassifier(), {'loss': ['hinge']}],
+
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
+
             'Tree': [DecisionTreeClassifier(), {'criterion': ['gini']}],
         }
 
@@ -53,7 +59,7 @@ class Classify(object):
         selected_feature_matrix = SelectKBest(chi2, k=int(0.8*feature_matrix.shape[0])).fit_transform(feature_matrix, response_vector)
         return selected_feature_matrix
 
-    def optimize_classifier(self, feature_matrix, response, classifier, parameter_grid, parameter_of_interest):
+    def optimize_classifier(self, classifier, parameter_grid, parameter_of_interest):
         """
 
         :param feature_matrix:
@@ -63,16 +69,15 @@ class Classify(object):
         :param parameter_of_interest:
         :return:
         """
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
+        cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
         clf = GridSearchCV(classifier, parameter_grid, cv=cross_val, n_jobs=4)
-        self.clf_name = 'SGD'
-        clf.fit(feature_matrix, response)
+        clf.fit(self.feature_matrix, self.response)
         print('Grid Search Completed', clf.best_estimator_, clf.best_score_)
         self.classifier = clf.best_estimator_
         self.results.plot_classifier_optimization(clf.grid_scores_, parameter_of_interest, parameter_of_interest)
-        self.evaluate(feature_matrix, response)
+        self.evaluate()
 
-    def classifier_selection(self, feature_matrix, response):
+    def classifier_selection(self):
         """
         Select the classifier with the lowest error
         :return:
@@ -80,37 +85,37 @@ class Classify(object):
         best_score = 0
         for clf_name in self.classifiers.keys():
             clf = self.classifiers[clf_name][0]
-            score = self.evaluate_learning_curve(feature_matrix, response, clf)
+            score = self.evaluate_learning_curve(clf)
             print(clf_name, score)
             if score > best_score:
                 self.clf_name = clf_name
                 self.classifier = clf
 
-    def evaluate_learning_curve(self, feature_matrix, response, classifier):
+    def evaluate_learning_curve(self, classifier):
         """
         Evaluate the classifier input with learning curve and cross validation
         :param feature_matrix:
         :param response:
         :return:
         """
-        train_sizes = np.arange(100, int(0.9*len(response)), 5000)
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        train_sizes, train_scores, valid_scores = learning_curve(classifier, feature_matrix, response,
+        train_sizes = np.arange(100, int(0.9*len(self.response)), 5000)
+        cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
+        train_sizes, train_scores, valid_scores = learning_curve(classifier, self.feature_matrix, self.response,
                                                                  train_sizes=train_sizes, cv=cross_val,
                                                                  n_jobs=4)
 
         self.results.plot_learning_curve(train_sizes, train_scores, valid_scores, classifier)
         return np.mean(valid_scores[:-1])
 
-    def evaluate(self, feature_matrix, response):
+    def evaluate(self):
         """
 
         :param feature_matrix:
         :param response:
         :return:
         """
-        cross_val = KFold(len(response), n_folds=10, shuffle=True)
-        scores = cross_validation.cross_val_score(self.classifier, feature_matrix, response, cv=cross_val)
+        cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
+        scores = cross_validation.cross_val_score(self.classifier, self.feature_matrix, self.response, cv=cross_val)
         return np.mean(scores)
 
     def train(self, feature_matrix, response_vector):
