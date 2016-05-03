@@ -80,8 +80,8 @@ if __name__ == '__main__':
     claims_matrix, response_vector = f.analyze_column_data(file, 'claims')
 
     # Get them all together
-    feature_matrix = hstack(title_matrix, abstract_matrix)
-    feature_matrix = hstack(feature_matrix, claims_matrix)
+    feature_matrix = hstack([title_matrix, abstract_matrix])
+    feature_matrix = hstack([feature_matrix, claims_matrix])
 
     f.evaluate_performance(feature_matrix, response_vector)
     f.full_train(feature_matrix, response_vector)
