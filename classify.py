@@ -19,7 +19,7 @@ class Classify(object):
     def __init__(self, config, feature_matrix, response):
         self.config = config
         self.classifier = SGDClassifier(alpha=1.3e-5, l1_ratio=0.1)
-        self.clf_name = None
+        self.clf_name = 'SGD'
         self.results = Results(config)
         self.feature_matrix = feature_matrix
         self.response = response
