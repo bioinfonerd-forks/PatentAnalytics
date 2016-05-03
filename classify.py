@@ -122,13 +122,13 @@ class Classify(object):
         predictions = self.classifier.predict(test_matrix)
         return predictions
 
-    def save_classifier(self, column_name):
+    def save_classifier(self):
         """
         :param column_name:
         :return:
         """
         # SAVE MODEL
-        path = self.config.get_classifier_path(column_name)
+        path = self.config.get_classifier_path(self.clf_name)
         pickle.dump(self.classifier, open(path, 'wb'))
 
     def load_classifier(self, column_name):

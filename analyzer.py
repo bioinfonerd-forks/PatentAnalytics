@@ -27,16 +27,22 @@ class Analyzer(object):
 
         self.data_frame = df[[x.startswith(self.config.art_units) for x in df.artunit]]
 
+        # Clean data, get rid of entries with less than 100 characters in the abstract, title, and claims
+        criterion = self.data_frame['abstract'].map(lambda x: len(str(x)) > 100)
+        self.data_frame = self.data_frame[criterion]
+
+        criterion = self.data_frame['title'].map(lambda x: len(str(x)) > 100)
+        self.data_frame = self.data_frame[criterion]
+
+        criterion = self.data_frame['claims'].map(lambda x: len(str(x)) > 100)
+        self.data_frame = self.data_frame[criterion]
+
     def extract_data(self, column_name):
         """
 
         :param column_name: Name list abstract or title or claims
         :return:
         """
-        # Clean data, get rid of entries with less than 100 characters
-        criterion = self.data_frame[column_name].map(lambda x: len(str(x)) > 100)
-        self.data_frame = self.data_frame[criterion]
-
         self.data = self.data_frame[column_name].tolist()
 
         # Assign art unit to class

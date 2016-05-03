@@ -1,6 +1,7 @@
 from config import Config
 from analyzer import Analyzer
 from classify import Classify
+from scipy.sparse import hstack
 
 
 class Factory(object):
@@ -42,7 +43,7 @@ class Factory(object):
         self.classify.optimize_classifier(feature_matrix, response_vector, self.classify.classifier,
                                           self.classify.classifiers[self.classify.clf_name][1], 'alpha')
 
-    def full_train(self, feature_matrix, response_vector, column_name):
+    def full_train(self, feature_matrix, response_vector):
         """
         GET THE CLASSIFIER TRAINED
         :param feature_matrix:
@@ -52,7 +53,7 @@ class Factory(object):
         """
         feature_matrix = self.classify.feature_selection(feature_matrix, response_vector)
         self.classify.train(feature_matrix, response_vector)
-        self.classify.save_classifier(column_name)
+        self.classify.save_classifier()
 
     def predict(self, entry, column_name):
         """
@@ -73,9 +74,15 @@ if __name__ == '__main__':
     f = Factory(config_info)
     file = '2015_2016_Patent_Data_new.csv'
 
-    for column_name in ['abstract', 'claims']:
-        print(column_name)
-        feature_matrix, response_vector = f.analyze_column_data(file, column_name)
-        f.evaluate_performance(feature_matrix, response_vector)
-        f.full_train(feature_matrix, response_vector, column_name)
-        # f.compute_heuristics(file, column_name)
+    # Get all the feature matrixes
+    title_matrix, response_vector = f.analyze_column_data(file, 'title')
+    abstract_matrix, response_vector = f.analyze_column_data(file, 'abstract')
+    claims_matrix, response_vector = f.analyze_column_data(file, 'claims')
+
+    # Get them all together
+    feature_matrix = hstack(title_matrix, abstract_matrix)
+    feature_matrix = hstack(feature_matrix, claims_matrix)
+
+    f.evaluate_performance(feature_matrix, response_vector)
+    f.full_train(feature_matrix, response_vector)
+    # f.compute_heuristics(file, column_name)
