@@ -29,6 +29,10 @@
         </form>
     </div>
 
+{% if group %}
+<p><font color="blue">{{ group }}</font></p>
+{% endif %}
+
 
 {% if error %}
 <p><font color="red">{{ error }}</font></p>
