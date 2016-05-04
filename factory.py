@@ -118,9 +118,9 @@ if __name__ == '__main__':
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
 
-    f.full_train()
-    predicted_response = f.classify.predict(feature_matrix)
-    print(confusion_matrix(response_vector, predicted_response))
-    # f.optimize(feature_matrix, response_vector)
+    # f.full_train()
+    # predicted_response = f.classify.predict(feature_matrix)
+    # print(confusion_matrix(response_vector, predicted_response))
+    f.optimize(feature_matrix, response_vector)
     # f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)
