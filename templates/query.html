@@ -13,6 +13,15 @@
     Welcome to the Patent Art Unit Classification System
 </h1>
 
+    <div class="container_right">
+    {% if group %}
+    <h2><font color="blue">{{ group[0] }}</font></h2>
+    {% endif %}
+
+    {% if error %}
+    <h2><font color="red">{{ error }}</font></h2>
+    {% endif %}
+    </div>
 
     <div class="container2">
          <form action="/query" method="POST">
@@ -29,14 +38,7 @@
         </form>
     </div>
 
-{% if group %}
-<p><font color="blue">{{ group }}</font></p>
-{% endif %}
 
-
-{% if error %}
-<p><font color="red">{{ error }}</font></p>
-{% endif %}
 
 </div>
 
