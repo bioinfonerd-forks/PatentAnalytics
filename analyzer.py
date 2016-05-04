@@ -157,7 +157,6 @@ class Analyzer(object):
         :param data:
         :return:
         """
-        data = data.lower()
         return self.feature_model.transform(data)
 
     def save_model(self, feature_name):
