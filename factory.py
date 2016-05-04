@@ -32,11 +32,7 @@ class Factory(object):
         self.analyze_column_data(filename, column_name)
         self.analyzer.heuristics(column_name)
 
-<<<<<<< HEAD
     def evaluate_performance(self):
-=======
-    def evaluate_performance(self, feature_matrix, response_vector):
->>>>>>> 0cde01dfff0b9179d326b68c1b885cf4b4dd5a50
         """
 
         :param feature_matrix:
@@ -45,12 +41,7 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
-<<<<<<< HEAD
-=======
-        self.classify.train()
-        predicted_response = self.classify.predict(feature_matrix)
-        print(confusion_matrix(response_vector, predicted_response))
->>>>>>> 0cde01dfff0b9179d326b68c1b885cf4b4dd5a50
+
 
     def optimize(self, feature_matrix, response_vector):
         """
