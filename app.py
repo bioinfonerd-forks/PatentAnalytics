@@ -27,23 +27,23 @@ def submit_query():
         try:
             title = request.form['title']
         except KeyError:
-            pass
+            return render_template('query.html', error=KeyError)
 
         try:
             abstract = request.form['abstract']
         except KeyError:
-            pass
+            return render_template('query.html', error=KeyError)
 
         try:
             claims = request.form['claims']
         except KeyError:
-            pass
+            return render_template('query.html', error=KeyError)
+
 
     config = Config()
     f = Factory(config)
-    f.evaluate(title, abstract, claims)
-
-
+    feature_vector = f.evaluate(title, abstract, claims)
+    f.predict(feature_vector)
     return render_template('query.html', group=group)
 
 if __name__ == "__main__":
