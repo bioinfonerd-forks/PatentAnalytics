@@ -155,5 +155,5 @@ class Classify(object):
         :param column_name:
         :return:
         """
-        path = self.config.get_classifier_path(clf_name)
+        path = self.config.get_classifier_path(clf_name, False)
         self.classifier = pickle.load(open(path, 'rb'))

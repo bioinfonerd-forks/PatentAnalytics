@@ -88,7 +88,7 @@ class Factory(object):
         :param feature_vector:
         :return:
         """
-        self.classify.load_classifier('SGD2016-05-03', False)
+        self.classify.load_classifier('SGD2016-05-03')
         group = self.classify.predict(feature_vector)
         return group
 
