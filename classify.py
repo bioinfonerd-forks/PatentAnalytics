@@ -71,7 +71,7 @@ class Classify(object):
         clf.fit(self.feature_matrix, self.response)
         print('Grid Search Completed', clf.best_estimator_, clf.best_score_)
         self.classifier = clf.best_estimator_
-        self.results.plot_classifier_optimization(clf_name, clf.grid_scores_)
+        self.results.plot_classifier_optimization(clf_name, clf.grid_scores_, clf.best_params_)
 
     def classifier_selection(self):
         """

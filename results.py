@@ -6,17 +6,23 @@ class Results(object):
     def __init__(self, config):
         self.config = config
 
-    def plot_classifier_optimization(self, clf_name, classifier_grid_scores):
+    def plot_classifier_optimization(self, clf_name, classifier_grid_scores, best_parms):
         """
         Plot the result of the classifier optimization for a single classifier
         :param classifier_grid_scores:
         :param parameter:
         :return:
         """
-        for param in classifier_grid_scores[0].parameters:
-            parm_vec = [x.parameters[param] for x in classifier_grid_scores]
+
+        for param in best_parms.keys():
+            parm_vec1 = [x.parameters['l1_ratio'] for x in classifier_grid_scores if x.parameters[param] == best_parms[param]]
             scores = [x.mean_validation_score for x in classifier_grid_scores]
-            plt.plot(parm_vec, scores, '.')
+            plt.plot(parm_vec1, scores, '.')
+            plt.title(clf_name)
+            plt.show()
+
+            parm_vec2 = [x.parameters['alpha'] for x in classifier_grid_scores if x.parameters[param] == best_parms[param]]
+            plt.plot(parm_vec2, scores, '.')
             plt.title(clf_name)
             plt.show()
 
