@@ -9,7 +9,7 @@ class Factory(object):
     def __init__(self, config):
         self.config = config
         self.analyzer = Analyzer(self.config)
-        self.classify = Classify(config_info)
+        self.classify = Classify(config)
 
     def analyze_column_data(self, filename, column_name):
         """
