@@ -32,7 +32,11 @@ class Factory(object):
         self.analyze_column_data(filename, column_name)
         self.analyzer.heuristics(column_name)
 
+<<<<<<< HEAD
     def evaluate_performance(self):
+=======
+    def evaluate_performance(self, feature_matrix, response_vector):
+>>>>>>> 0cde01dfff0b9179d326b68c1b885cf4b4dd5a50
         """
 
         :param feature_matrix:
@@ -41,6 +45,12 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
+<<<<<<< HEAD
+=======
+        self.classify.train()
+        predicted_response = self.classify.predict(feature_matrix)
+        print(confusion_matrix(response_vector, predicted_response))
+>>>>>>> 0cde01dfff0b9179d326b68c1b885cf4b4dd5a50
 
     def optimize(self, feature_matrix, response_vector):
         """
@@ -116,10 +126,10 @@ if __name__ == '__main__':
 
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
-    f.evaluate_performance()
-    # f.full_train()
-    # predicted_response = f.classify.predict(feature_matrix)
-    # print(confusion_matrix(response_vector, predicted_response))
+
+    f.full_train()
+    predicted_response = f.classify.predict(feature_matrix)
+    print(confusion_matrix(response_vector, predicted_response))
     # f.optimize(feature_matrix, response_vector)
     # f.full_train(feature_matrix, response_vector)
     # f.compute_heuristics(file, column_name)

@@ -36,6 +36,7 @@ class Classify(object):
             'Tree': [DecisionTreeClassifier(), {}],
         }
 
+
     @staticmethod
     def reduce_dimensionality(feature_matrix):
         """
