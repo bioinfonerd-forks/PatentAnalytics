@@ -22,8 +22,8 @@ class Config(object):
     def get_matrix_path(self, feature_name):
         return os.path.join(self.data_dir, feature_name + self.matrix_name)
 
-    def get_classifier_path(self, clf_name, date=True):
-        if date:
+    def get_classifier_path(self, clf_name, rand=True):
+        if rand:
             today = date.today().isoformat()
             return os.path.join(self.classifier_dir, clf_name + today + '.dill')
         else:
