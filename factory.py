@@ -9,7 +9,7 @@ class Factory(object):
     def __init__(self, config):
         self.config = config
         self.analyzer = Analyzer(self.config)
-        self.classify = None
+        self.classify = Classify(config_info)
 
     def analyze_column_data(self, filename, column_name):
         """
@@ -41,7 +41,6 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
-
 
     def optimize(self, feature_matrix, response_vector):
         """
@@ -89,7 +88,7 @@ class Factory(object):
         :param feature_vector:
         :return:
         """
-        self.classify.load_classifier('clf_name')
+        self.classify.load_classifier('SGD2016-05-03')
         group = self.classify.predict(feature_vector)
         return group
 
