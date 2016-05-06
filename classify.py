@@ -32,8 +32,6 @@ class Classify(object):
             'Passive Aggressive': [PassiveAggressiveClassifier(loss='hinge'), {}],
 
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
-
-            'Tree': [DecisionTreeClassifier()]
         }
 
 
