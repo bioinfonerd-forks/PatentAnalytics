@@ -55,10 +55,10 @@ class Classify(object):
         """
         feature_matrix = self.feature_matrix
         response_vector = self.response
-        selected_feature_matrix = SelectKBest(chi2, k=int(0.8*feature_matrix.shape[0])).fit_transform(feature_matrix, response_vector)
+        selected_feature_matrix = SelectKBest(chi2, k=int(0.05*feature_matrix.shape[0])).fit_transform(feature_matrix, response_vector)
         self.feature_matrix = selected_feature_matrix
 
-    def optimize_classifier(self, clf_name):
+    def optimize_classifier(self, clf_name=None):
         """
         Optimize a single classifier
         :param classifier:
@@ -66,6 +66,9 @@ class Classify(object):
         :param parameter_of_interest:
         :return:
         """
+        if not clf_name:
+            clf_name = self.clf_name
+
         cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
         clf = GridSearchCV(self.classifiers[clf_name][0], self.classifiers[clf_name][1], cv=cross_val, n_jobs=4)
         clf.fit(self.feature_matrix, self.response)
@@ -131,6 +134,8 @@ class Classify(object):
 
         # Make sure the number of examples is greater than number of predictors
         self.classifier.fit(self.feature_matrix, self.response)
+        train_error = self.evaluate()
+        return train_error
 
     def predict(self, test_matrix):
         """
