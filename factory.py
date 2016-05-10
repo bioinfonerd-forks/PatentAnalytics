@@ -94,4 +94,3 @@ if __name__ == '__main__':
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
     f.full_train()
-
