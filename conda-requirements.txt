@@ -7,4 +7,5 @@ Flask-Cors==2.1.2
 nltk
 nomkl
 dill
-matplotlib.pyplot
+matplotlib
+pyplot
