@@ -8,3 +8,4 @@ nltk
 nomkl
 dill
 boto
+awscli
