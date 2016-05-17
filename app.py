@@ -1,8 +1,10 @@
 from flask import Flask, request, render_template
 import sys
 import logging
+import awscli
 from factory import Factory
 from config import Config
+from boto.s3.connection import S3Connection
 
 DEBUG = True
 SECRET_KEY = 'development key'
@@ -41,7 +43,14 @@ def submit_query():
         except KeyError:
             return render_template('query.html', error=KeyError)
 
-
+    AWS_KEY = 'AKIAJ6IETQJQWVWOZI6A'
+    AWS_SECRET = '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'
+    aws_connection = S3Connection(AWS_KEY, AWS_SECRET)
+    bucket = aws_connection.get_bucket('patent-model-data')
+    key.get_contents_to_filename(local_download_destination)
+    for file_key in bucket.list():
+        print file_key.name
+    end
     config = Config()
     f = Factory(config)
     feature_vector = f.evaluate(title, abstract, claims)
