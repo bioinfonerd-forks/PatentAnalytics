@@ -41,9 +41,11 @@ def submit_query():
     
     
     config = Config()
-   ''' f = Factory(config)
+    ''' 
+   f = Factory(config)
     feature_vector = f.evaluate(title, abstract, claims)
-    group = f.predict(feature_vector)'''
+    group = f.predict(feature_vector)
+    '''
     return render_template('query.html', group=10000)
 
 if __name__ == '__main__':
