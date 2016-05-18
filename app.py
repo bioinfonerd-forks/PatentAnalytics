@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template
 import sys
-import logging
-import awscli
 from factory import Factory
 from config import Config
 
