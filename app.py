@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import sys
 from factory import Factory
 from config import Config
+from results import Results
 from analyzer import Analyzer
 from scipy.sparse import hstack
 from pandas import DataFrame
