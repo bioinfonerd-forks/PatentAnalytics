@@ -14,6 +14,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 import dill as pickle
 import numpy as np
+from data import abstract_feature_model.dill 
 
 DEBUG = True
 SECRET_KEY = 'development key'
