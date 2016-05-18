@@ -2,6 +2,8 @@ from flask import Flask, request, render_template
 import sys
 from factory import Factory
 from config import Config
+from analyzer import Analyzer
+import Data
 
 DEBUG = True
 SECRET_KEY = 'development key'
