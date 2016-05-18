@@ -3,6 +3,7 @@ import sys
 from factory import Factory
 from config import Config
 from analyzer import Analyzer
+from scipy.sparse import hstack
 
 DEBUG = True
 SECRET_KEY = 'development key'
