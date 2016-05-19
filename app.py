@@ -54,11 +54,11 @@ def submit_query():
     
     config = Config()
     f = Factory(config)
-    feature_vector = f.evaluate(title, abstract, claims)
     '''
+    feature_vector = f.evaluate(title, abstract, claims)
     group = f.predict(feature_vector)
     '''
-    return render_template('query.html', group=str(10000))
+    return render_template('query.html', group=str(config.get_model_path('title'))
 
 if __name__ == '__main__':
     from os import environ
