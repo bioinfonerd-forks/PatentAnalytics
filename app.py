@@ -62,5 +62,6 @@ def submit_query():
     return render_template('query.html', group=str(config.get_model_path('title'))
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
-    #app.run()
+    from os import environ
+    #app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
+    app.run()
