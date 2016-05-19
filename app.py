@@ -55,7 +55,7 @@ def submit_query():
         f = Factory(config)
         #feature_vector = f.evaluate(title, abstract, claims)
         #group = f.predict(feature_vector)
-        return render_template('query.html', group= config.get_model_path('title')))
+        return render_template('query.html', group= config.get_model_path('title'))
 
 
 
