@@ -63,7 +63,7 @@ def submit_query():
     
     
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
     from os import environ
     #app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
     app.run()
