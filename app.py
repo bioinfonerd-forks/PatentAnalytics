@@ -9,6 +9,7 @@ from analyzer import Analyzer
 from scipy.sparse import hstack
 from pandas import DataFrame
 import os
+from os import environ
 import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
@@ -61,6 +62,5 @@ def submit_query():
     return render_template('query.html', group=str(config.get_model_path('title'))
 
 if __name__ == '__main__':
-    from os import environ
     app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
     #app.run()
