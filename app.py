@@ -50,20 +50,15 @@ def submit_query():
             claims = request.form['claims']
         except KeyError:
             return render_template('query.html', error=KeyError)
-            
-    
-    
+
         config = Config()
         f = Factory(config)
-        return render_template('query.html', group=str(config.get_model_path('title'))
-    
-   
-    #feature_vector = f.evaluate(title, abstract, claims)
-    #group = f.predict(feature_vector)
-    
-    
+        #feature_vector = f.evaluate(title, abstract, claims)
+        #group = f.predict(feature_vector)
+        return render_template('query.html', group= str(config.get_model_path('title')))
+
 
 if __name__ == '__main__':
     from os import environ
-    #app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
-    app.run()
+    app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
+    #app.run()
