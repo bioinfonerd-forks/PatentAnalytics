@@ -173,8 +173,7 @@ class Analyzer(object):
         :param feature_name
         :return:
         """
-        self.feature_model = pickle.load(open('C:\Users\Billy\workspace\FinalAPPNOW\PATENTFINAL3\data\title_feature_model.dill'),'rb')
-            #self.config.get_model_path(feature_name), 'rb'))
+        self.feature_model = pickle.load(open(self.config.get_model_path(feature_name), 'rb'))
 
     def save_features(self, feature_name):
         """
