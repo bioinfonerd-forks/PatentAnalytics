@@ -56,10 +56,11 @@ def submit_query():
     config = Config()
     f = Factory(config)
     return render_template('query.html', group=str(config.get_model_path('title'))
-    '''
-    feature_vector = f.evaluate(title, abstract, claims)
-    group = f.predict(feature_vector)
-    '''
+    
+   
+    #feature_vector = f.evaluate(title, abstract, claims)
+    #group = f.predict(feature_vector)
+    
     
 
 if __name__ == '__main__' :
