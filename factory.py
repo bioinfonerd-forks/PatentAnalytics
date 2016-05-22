@@ -67,7 +67,6 @@ class Factory(object):
         :return:
         """
         self.analyzer.load_model('title')
-        '''
         title_vector = self.analyzer.transform([title])
         self.analyzer.load_model('abstract')
         abstract_vector = self.analyzer.transform([abstract])
@@ -76,7 +75,7 @@ class Factory(object):
         
         feature_vector = hstack([title_vector, abstract_vector])
         feature_vector = hstack([feature_vector, claims_vector])
-        '''
+
         feature_vector=5
         return feature_vector
 
