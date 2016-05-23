@@ -4,7 +4,6 @@ from classify import Classify
 from scipy.sparse import hstack
 from sklearn.metrics import confusion_matrix
 
-
 class Factory(object):
     def __init__(self, config):
         self.config = config
@@ -76,7 +75,6 @@ class Factory(object):
         feature_vector = hstack([title_vector, abstract_vector])
         feature_vector = hstack([feature_vector, claims_vector])
 
-        feature_vector=5
         return feature_vector
 
     def predict(self, feature_vector):

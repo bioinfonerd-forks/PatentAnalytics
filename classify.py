@@ -113,9 +113,10 @@ class Classify(object):
 
         return train_sizes, train_scores, valid_scores
 
-    def evaluate(self):
-        """
 
+    def evaluate(self):
+
+        """
         :param feature_matrix:
         :param response:
         :return:

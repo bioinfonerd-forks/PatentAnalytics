@@ -17,7 +17,7 @@ class Config(object):
         )
 
     def get_model_path(self, feature_name):
-        return os.path.join('app/.heroku/miniconda/envs/heroku-env/bin:/app/.heroku/anaconda/bin:/usr/local/bin:/usr/bin:/bin/data', feature_name + self.model_name)
+        return os.path.join(self.data_dir, feature_name + self.model_name)
 
     def get_matrix_path(self, feature_name):
         return os.path.join(self.data_dir, feature_name + self.matrix_name)
