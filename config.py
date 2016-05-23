@@ -4,7 +4,7 @@ from datetime import date
 
 class Config(object):
     def __init__(self):
-        self.base_dir = os.path.dirname(os.path.realpath(__file__))
+        self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.data_dir = os.path.join(self.base_dir, 'data')
         self.results_dir = os.path.join(self.base_dir, 'result')
         self.classifier_dir = os.path.join(self.base_dir, 'classifiers')
@@ -17,7 +17,7 @@ class Config(object):
         )
 
     def get_model_path(self, feature_name):
-        return os.path.join(self.data_dir, feature_name + self.model_name)
+        return os.path.join('app/.heroku/miniconda/envs/heroku-env/bin:/app/.heroku/anaconda/bin:/usr/local/bin:/usr/bin:/bin/data', feature_name + self.model_name)
 
     def get_matrix_path(self, feature_name):
         return os.path.join(self.data_dir, feature_name + self.matrix_name)
