@@ -1,14 +1,2 @@
 *.xml filter=lfs diff=lfs merge=lfs -text
 .dill filter=lfs diff=lfs merge=lfs -text
-abstract_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
-abstract_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-title_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
-title_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-claims_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-claims_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
-data/abstract_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
-data/abstract_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-data/title_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
-data/title_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-data/claims_feature_model.dill filter=lfs diff=lfs merge=lfs -text
-data/claims_feature_matrix.dill filter=lfs diff=lfs merge=lfs -text
