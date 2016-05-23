@@ -11,9 +11,6 @@ USERNAME = 'admin'
 PASSWORD = 'default'
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['DEBUG'] = True
-app.debug = True
-app.config['SERVER_NAME'] = '0.0.0.0:5000'
 
 
 @app.route('/')
@@ -53,5 +50,5 @@ def submit_query():
 
 if __name__ == '__main__':
     from os import environ
-    app.run(debug=False,host='0.0.0.0',port=environ.get("PORT", 5000))
+    app.run(debug=False, host='0.0.0.0', port=environ.get("PORT", 5000))
     #app.run()
