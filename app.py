@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['DEBUG'] = True
 app.debug = True
-app.config['SERVER_NAME'] = 0.0.0.0:5000
+app.config['SERVER_NAME'] = '0.0.0.0:5000'
 
 
 @app.route('/')
