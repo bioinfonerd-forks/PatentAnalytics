@@ -165,7 +165,7 @@ class Analyzer(object):
         :param feature_name:
         :return:
         """
-        pickle.dump(self.feature_model, open(self.config.get_model_path(feature_name), 'wb'))
+        pickle.dump(self.feature_model, open(self.config.get_model_path(feature_name), 'wb'), protocol=2)
 
     def load_model(self, feature_name):
         """
@@ -181,7 +181,7 @@ class Analyzer(object):
         :param feature_name:
         :return: Nothing
         """
-        pickle.dump(self.feature_matrix, open(self.config.get_matrix_path(feature_name), 'wb'))
+        pickle.dump(self.feature_matrix, open(self.config.get_matrix_path(feature_name), 'wb'), protocol=2)
 
     def load_features(self, feature_name):
         """
