@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template
-#import sys
-#from datetime import date
 from factory import Factory
 from config import Config
 
@@ -46,9 +44,6 @@ def submit_query():
         group = f.predict(feature_vector)
         return render_template('query.html', group=group)
 
-
-
 if __name__ == '__main__':
-    from os import environ
     #app.run(host='0.0.0.0', port=int(environ.get("PORT", 5000)))
     app.run(host='127.0.0.1')
