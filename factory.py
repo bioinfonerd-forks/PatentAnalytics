@@ -35,7 +35,7 @@ class Factory(object):
         """
         self.analyzer.load_patent_data(filename)
         self.analyzer.extract_data(column_name)
-        n_grams = 3
+        n_grams = 1
         self.analyzer.extract_features(n_grams, column_name)
         return self.analyzer.feature_matrix, self.analyzer.response
 
@@ -90,7 +90,7 @@ class Factory(object):
 if __name__ == '__main__':
     config_info = Config()
     f = Factory(config_info)
-    file = '2015_2016_Patent_Data.csv'
+    file = '2015_2016_Patent_Data_new.csv'
     feature_matrix, response_vector = f.get_all_column_data(file)
     f.classify = Classify(config_info, feature_matrix, response_vector)
     f.full_train()
