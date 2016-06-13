@@ -155,7 +155,7 @@ class Classify(object):
         :return:
         """
         # SAVE MODEL
-        path = self.config.get_classifier_path(self.clf_name)
+        path = self.config.get_model_path(self.clf_name)
         pickle.dump(self.classifier, open(path, 'wb'))
 
     def load_classifier(self, clf_name):
@@ -163,5 +163,5 @@ class Classify(object):
         :param column_name:
         :return:
         """
-        path = self.config.get_classifier_path(clf_name, False)
+        path = self.config.get_model_path(clf_name)
         self.classifier = pickle.load(open(path, 'rb'))
