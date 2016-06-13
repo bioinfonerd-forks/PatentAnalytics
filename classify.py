@@ -79,7 +79,7 @@ class Classify(object):
         Select the classifier with the lowest error, create a plot comparing classifiers
         :return:
         """
-        best_score = 0
+        best_score = 0.1
         train_sizes = dict()
         train_scores = dict()
         valid_scores = dict()
@@ -94,6 +94,7 @@ class Classify(object):
                 self.clf_name = clf_name
                 self.classifier = clf
                 self.classifier.cv_score = score
+                best_score = score
 
         self.results.plot_learning_curves(train_sizes, valid_scores, clf_names)
 
