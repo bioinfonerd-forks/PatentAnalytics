@@ -13,6 +13,7 @@ class IntegrationTest(object):
     def test_predict():
         config_info = Config()
         f = Factory(config_info)
+        f.classify.load_classifier('Perceptron2016-06-11')
         feature_vector = f.evaluate(TITLE, ABSTRACT, CLAIMS)
         f.predict(feature_vector)
 

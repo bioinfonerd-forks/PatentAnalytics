@@ -2,7 +2,7 @@ from config import Config
 from analyzer import Analyzer
 from classify import Classify
 from scipy.sparse import hstack
-from sklearn.metrics import confusion_matrix
+
 
 class Factory(object):
     def __init__(self, config):
@@ -55,7 +55,7 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
-        # self.classify.optimize_classifier()
+        self.classify.optimize_classifier()
         self.classify.train()
         self.classify.save_classifier()
 
@@ -83,7 +83,6 @@ class Factory(object):
         :param feature_vector:
         :return:
         """
-        self.classify.load_classifier('SGD2016-05-03')
         group = self.classify.predict(feature_vector)
         return group
 

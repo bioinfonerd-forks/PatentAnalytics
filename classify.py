@@ -1,14 +1,11 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import SGDClassifier
-from sklearn.linear_model import PassiveAggressiveClassifier
-from sklearn.linear_model import Perceptron
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron
 from sklearn.cross_validation import KFold
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import chi2
+from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.grid_search import GridSearchCV
 from sklearn.learning_curve import learning_curve
+from sklearn.metrics import confusion_matrix
 from sklearn import cross_validation
 import numpy as np
 import dill as pickle
@@ -18,7 +15,7 @@ from results import Results
 class Classify(object):
     def __init__(self, config, feature_matrix=None, response=None):
         self.config = config
-        self.classifier = SGDClassifier(alpha=1.3e-5, l1_ratio=0.1)
+        self.classifier = SGDClassifier()
         self.clf_name = 'SGD'
         self.results = Results(config)
         self.feature_matrix = feature_matrix
@@ -84,7 +81,7 @@ class Classify(object):
         best_score = 0
         train_sizes = dict()
         train_scores = dict()
-        valid_scores= dict()
+        valid_scores = dict()
 
         clf_names = self.classifiers.keys()
         for clf_name in clf_names:
@@ -113,7 +110,6 @@ class Classify(object):
 
         return train_sizes, train_scores, valid_scores
 
-
     def evaluate(self):
 
         """
@@ -123,6 +119,10 @@ class Classify(object):
         """
         cross_val = KFold(len(self.response), n_folds=10, shuffle=True)
         scores = cross_validation.cross_val_score(self.classifier, self.feature_matrix, self.response, cv=cross_val)
+
+        test_response = self.predict(self.feature_matrix)
+        conf_mat = confusion_matrix(self.response, test_response, self.config.art_units)
+        print(conf_mat)
         return np.mean(scores)
 
     def train(self):
