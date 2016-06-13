@@ -63,6 +63,7 @@ class Classify(object):
         :param parameter_of_interest:
         :return:
         """
+        # TODO: THIS METHOD IS CURRENTLY BROKEN DUE TO THE C
         if not clf_name:
             clf_name = self.clf_name
 
@@ -92,6 +93,7 @@ class Classify(object):
             if score > best_score:
                 self.clf_name = clf_name
                 self.classifier = clf
+                self.classifier.cv_score = score
 
         self.results.plot_learning_curves(train_sizes, valid_scores, clf_names)
 

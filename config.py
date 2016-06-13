@@ -11,7 +11,7 @@ class Config(object):
         self.model_name = '_model.dill'
         self.matrix_name = '_feature_matrix.dill'
         self.art_units = (
-            "36", "24",
+            "24", "36",
             # "21", "26"
             # "16", "17",
             # "28", "37"

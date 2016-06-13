@@ -55,7 +55,7 @@ class Factory(object):
         """
         self.classify.feature_selection()
         self.classify.classifier_selection()
-        self.classify.optimize_classifier()
+        # self.classify.optimize_classifier()
         self.classify.train()
         self.classify.save_classifier()
 
