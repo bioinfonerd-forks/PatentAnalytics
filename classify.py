@@ -3,6 +3,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron, LogisticRegression
 from sklearn.cross_validation import KFold
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+from sklearn.neural_network import MLPClassifier
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.grid_search import GridSearchCV
 from sklearn.learning_curve import learning_curve
@@ -32,7 +33,8 @@ class Classify(object):
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
             'LogisticRegression': [LogisticRegression(multi_class='multinomial'), {}],
             'LDA': [LinearDiscriminantAnalysis(solver='svd', shrinkage='auto'), {}],
-            'QDA': [QuadraticDiscriminantAnalysis(), {}]
+            'QDA': [QuadraticDiscriminantAnalysis(), {}],
+            'MLP': [MLPClassifier(), {}]
         }
 
 
