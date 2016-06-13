@@ -53,7 +53,7 @@ class Factory(object):
         GET THE CLASSIFIER TRAINED
         :return:
         """
-        self.classify.feature_selection()
+        # self.classify.feature_selection()
         self.classify.classifier_selection()
         # self.classify.optimize_classifier()
         self.classify.train()

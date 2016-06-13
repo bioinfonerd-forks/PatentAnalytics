@@ -1,7 +1,8 @@
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron
+from sklearn.linear_model import SGDClassifier, PassiveAggressiveClassifier, Perceptron, LogisticRegression
 from sklearn.cross_validation import KFold
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.grid_search import GridSearchCV
 from sklearn.learning_curve import learning_curve
@@ -29,6 +30,9 @@ class Classify(object):
             'Passive Aggressive': [PassiveAggressiveClassifier(loss='hinge'), {}],
 
             'Perceptron': [Perceptron(), {'alpha': np.arange(0.00001, 0.001, 0.00001)}],
+            'LogisticRegression': [LogisticRegression(multi_class='multinomial'), {}],
+            'LDA': [LinearDiscriminantAnalysis(solver='svd', shrinkage='auto'), {}],
+            'QDA': [QuadraticDiscriminantAnalysis(), {}]
         }
 
 
@@ -156,7 +160,7 @@ class Classify(object):
         :return:
         """
         # SAVE MODEL
-        path = self.config.get_model_path(self.clf_name)
+        path = self.config.get_classifier_path(self.clf_name)
         pickle.dump(self.classifier, open(path, 'wb'))
 
     def load_classifier(self, clf_name):
@@ -164,5 +168,5 @@ class Classify(object):
         :param column_name:
         :return:
         """
-        path = self.config.get_model_path(clf_name)
+        path = self.config.get_classifier_path(clf_name)
         self.classifier = pickle.load(open(path, 'rb'))

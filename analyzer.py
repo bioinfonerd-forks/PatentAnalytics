@@ -80,7 +80,7 @@ class Analyzer(object):
             tokenizer=Analyzer.tokenize,
             norm='l2',
             min_df=5,
-            max_features=100000
+            max_features=24000
         )
         return model
 
