@@ -16,16 +16,13 @@ class Config(object):
             # "16", "17",
             # "28", "37"
         )
+        self.today = date.today().isoformat()
 
     def get_model_path(self, feature_name):
-        return os.path.join(self.data_dir, feature_name + "".join(self.art_units) + self.model_name)
+        return os.path.join(self.data_dir, feature_name + "".join(self.art_units) + self.today + self.model_name)
 
     def get_matrix_path(self, feature_name):
-        return os.path.join(self.data_dir, feature_name + "".join(self.art_units) + self.matrix_name)
+        return os.path.join(self.data_dir, feature_name + "".join(self.art_units) + self.today + self.matrix_name)
 
     def get_classifier_path(self, clf_name, rand=True):
-        if rand:
-            today = date.today().isoformat()
-            return os.path.join(self.classifier_dir, clf_name + "".join(self.art_units) + today + '.dill')
-        else:
-            return os.path.join(self.classifier_dir, clf_name + "".join(self.art_units) + '.dill')
+        return os.path.join(self.classifier_dir, clf_name + "".join(self.art_units) + self.today + '.dill')
